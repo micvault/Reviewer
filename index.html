@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam Reviewers | CertExams</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px;
+    }
+
+    .wrap {
+      width: min(820px, 100%);
+    }
+
+    /* Top Header */
+    .header-bar {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 4px;
+    }
+
+    .site-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .site-sub {
+      color: #64748b;
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    .filter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-label {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .category-select {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #0f172a;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .category-select:focus {
+      border-color: #2563eb;
+    }
+
+    /* Categories List */
+    .panels {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .category-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .category-panel:hover {
+      border-color: #cbd5e1;
+    }
+
+    .category-panel[open] {
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    }
+
+    .category-header {
+      list-style: none;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      background: #ffffff;
+      transition: background 0.15s ease;
+    }
+
+    .category-header:hover {
+      background: #f8fafc;
+    }
+
+    .category-panel[open] .category-header {
+      border-bottom: 1px solid #f1f5f9;
+      background: #ffffff;
+    }
+
+    .category-header::-webkit-details-marker {
+      display: none;
+    }
+
+    .cat-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cat-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+
+    .cat-svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+    }
+
+    .cat-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    .cat-sub {
+      color: #64748b;
+      font-size: 0.84rem;
+      margin-top: 2px;
+    }
+
+    .cat-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-count {
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      width: 16px;
+      height: 16px;
+      color: #94a3b8;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .category-panel[open] .chevron {
+      transform: rotate(180deg);
+    }
+
+    .panel-body {
+      padding: 18px 20px 22px;
+    }
+
+    /* Subcategory Box */
+    .subcat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .subcat-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .subcat-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .filter-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    /* Mode Items */
+    .modes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mode {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: #ffffff;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .mode:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .mode-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .mode-title {
+      font-weight: 600;
+      font-size: 0.93rem;
+      margin-bottom: 3px;
+      color: #0f172a;
+    }
+
+    .mode-desc {
+      color: #64748b;
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .btn {
+      flex-shrink: 0;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: #2563eb;
+      border: 1px solid #1d4ed8;
+      border-radius: 5px;
+      padding: 7px 16px;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .foot {
+      text-align: center;
+      margin-top: 40px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 24px 12px; }
+      .category-header { padding: 14px 16px; }
+      .panel-body { padding: 14px 16px 18px; }
+      .mode { flex-direction: column; align-items: stretch; gap: 12px; }
+      .btn { text-align: center; padding: 9px 16px; }
+      .header-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .filter-wrap { width: 100%; justify-content: space-between; }
+      .category-select { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="header-bar">
+      <div>
+        <h1 class="site-title">CertExams Portal</h1>
+        <p class="site-sub">Select your exam category and study mode below</p>
+      </div>
+      <div class="filter-wrap">
+        <label for="categoryDropdown" class="filter-label">Jump to:</label>
+        <select id="categoryDropdown" class="category-select">
+          <option value="none">Select Category...</option>
+          <option value="cert-da">1. Certification (Data Analytics)</option>
+          <option value="pmi">2. PMI Certification</option>
+          <option value="summative">3. Summative (IT0021)</option>
+          <option value="all">Expand All</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="panels">
+
+      <!-- #1: CERTIFICATION REVIEWERS (DATA ANALYTICS) -->
+      <details class="category-panel" id="panel-cert-da">
+        <summary class="category-header">
+          <div class="cat-title-wrap">
+            <div class="cat-icon-badge">
+              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="6"></circle>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="cat-title">Certification Reviewers</div>
+              <div class="cat-sub">Industry certification exam preparation</div>
+            </div>
+          </div>
+          <div class="cat-right">
+            <span class="badge-count">Data Analytics • 3 modes</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </summary>
+        <div class="panel-body">
+          <div class="subcat-header">
+            <span class="subcat-title">IT Specialist: Data Analytics (ITS-DA)</span>
+            <span class="badge-count">68 Items</span>
+          </div>
+
+          <div class="modes">
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Sequential Review</div>
+                <div class="mode-desc">Original order with immediate feedback, interactive multi-select, matching, and full explanations.</div>
+              </div>
+              <a class="btn" href="exams/its-da.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Random Exam Mode</div>
+                <div class="mode-desc">Shuffled test simulation with no feedback until final submit and results breakdown.</div>
+              </div>
+              <a class="btn" href="exams/its-da-exam-random.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Quick Review (Random)</div>
+                <div class="mode-desc">Rapid practice with auto-advance countdown and shuffled question order.</div>
+              </div>
+              <a class="btn" href="exams/its-da-quick-random.html">Open</a>
+            </article>
+          </div>
+        </div>
+      </details>
+
+      <!-- #2: PMI CERTIFICATION REVIEWER -->
+      <details class="category-panel" id="panel-pmi">
+        <summary class="category-header">
+          <div class="cat-title-wrap">
+            <div class="cat-icon-badge">
+              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path>
+                <path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="cat-title">PMI Certification Reviewer</div>
+              <div class="cat-sub">Project management certification practice</div>
+            </div>
+          </div>
+          <div class="cat-right">
+            <span class="badge-count">PMI • 6 modes</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </summary>
+        <div class="panel-body">
+          <div class="subcat-header">
+            <span class="subcat-title">PMI Exam Practice Modes</span>
+            <span class="badge-count">86 Items</span>
+          </div>
+
+          <div class="modes">
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Sequential Review</div>
+                <div class="mode-desc">Original order with immediate feedback and study items.</div>
+              </div>
+              <a class="btn" href="exams/pmi.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Exam Mode</div>
+                <div class="mode-desc">Full mock exam with no feedback until final submit.</div>
+              </div>
+              <a class="btn" href="exams/pmi-exam.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Random Exam Mode</div>
+                <div class="mode-desc">Shuffled exam order with final score report.</div>
+              </div>
+              <a class="btn" href="exams/pmi-exam-random.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Quick Review</div>
+                <div class="mode-desc">Fast review flow with auto-advance timers.</div>
+              </div>
+              <a class="btn" href="exams/pmi-quick.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Quick Review (Random)</div>
+                <div class="mode-desc">Quick auto-advance with shuffled question order.</div>
+              </div>
+              <a class="btn" href="exams/pmi-quick-random.html">Open</a>
+            </article>
+
+            <article class="mode">
+              <div class="mode-main">
+                <div class="mode-title">Random Review</div>
+                <div class="mode-desc">Shuffled practice with saved session progress.</div>
+              </div>
+              <a class="btn" href="exams/pmi-random.html">Open</a>
+            </article>
+          </div>
+        </div>
+      </details>
+
+      <!-- #3: SUMMATIVE REVIEWERS (IT0021) -->
+      <details class="category-panel" id="panel-summative">
+        <summary class="category-header">
+          <div class="cat-title-wrap">
+            <div class="cat-icon-badge">
+              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                <path d="M6 6h10"></path>
+                <path d="M6 10h10"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="cat-title">Summative Reviewers</div>
+              <div class="cat-sub">Non-certification college course summative reviewers</div>
+            </div>
+          </div>
+          <div class="cat-right">
+            <span class="badge-count">IT0021 • 6 modes</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </summary>
+        <div class="panel-body">
+          <div class="subcat-header">
+            <span class="subcat-title">IT0021 — System Administration and Maintenance</span>
+            <div class="subcat-pills">
+              <button class="filter-btn active" data-filter="all">All IT0021</button>
+              <button class="filter-btn" data-filter="s1">Summative 1</button>
+              <button class="filter-btn" data-filter="s2">Summative 2</button>
+            </div>
+          </div>
+
+          <div class="modes" id="it0021-modes">
+            <!-- Summative 1 -->
+            <article class="mode" data-group="s1">
+              <div class="mode-main">
+                <div class="mode-title">IT0021 — Summative 1 (Full Exam Mode)</div>
+                <div class="mode-desc">Standard exam mode with interactive questions, grading, and explanations.</div>
+              </div>
+              <a class="btn" href="exams/it0021-summative-1.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="s1">
+              <div class="mode-main">
+                <div class="mode-title">IT0021 — Summative 1 (Random Exam Mode)</div>
+                <div class="mode-desc">Shuffled exam order with delayed feedback until final submission.</div>
+              </div>
+              <a class="btn" href="exams/it0021-summative-1-exam-random.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="s1">
+              <div class="mode-main">
+                <div class="mode-title">IT0021 — Summative 1 (Quick Review Random)</div>
+                <div class="mode-desc">Fast-paced auto-advancing review with shuffled order.</div>
+              </div>
+              <a class="btn" href="exams/it0021-summative-1-quick-random.html">Open</a>
+            </article>
+
+            <!-- Summative 2 -->
+            <article class="mode" data-group="s2">
+              <div class="mode-main">
+                <div class="mode-title">IT0021 — Summative 2 (Full Exam Mode)</div>
+                <div class="mode-desc">Summative 2 full exam mode with scoring and feedback.</div>
+              </div>
+              <a class="btn" href="exams/it0021-summative-2.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="s2">
+              <div class="mode-main">
+                <div class="mode-title">IT0021 — Summative 2 (Random Exam Mode)</div>
+                <div class="mode-desc">Shuffled exam order with scoring revealed upon exam completion.</div>
+              </div>
+              <a class="btn" href="exams/it0021-summative-2-exam-random.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="s2">
+              <div class="mode-main">
+                <div class="mode-title">IT0021 — Summative 2 (Quick Review Random)</div>
+                <div class="mode-desc">Quick auto-advancing review with shuffled order.</div>
+              </div>
+              <a class="btn" href="exams/it0021-summative-2-quick-random.html">Open</a>
+            </article>
+          </div>
+        </div>
+      </details>
+
+    </div>
+
+    <p class="foot">CertExams</p>
+  </main>
+
+  <script>
+    // Category Dropdown Jump / Open
+    const catDropdown = document.getElementById("categoryDropdown");
+    const panels = {
+      "cert-da": document.getElementById("panel-cert-da"),
+      "pmi": document.getElementById("panel-pmi"),
+      "summative": document.getElementById("panel-summative")
+    };
+
+    catDropdown.addEventListener("change", (e) => {
+      const val = e.target.value;
+      if (val === "none") return;
+      if (val === "all") {
+        Object.values(panels).forEach(p => {
+          p.open = true;
+        });
+      } else {
+        Object.entries(panels).forEach(([key, p]) => {
+          if (key === val) {
+            p.open = true;
+            p.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            p.open = false;
+          }
+        });
+      }
+    });
+
+    // IT0021 Subcategory Pill Filter (All, Summative 1, Summative 2)
+    const itButtons = document.querySelectorAll(".subcat-pills .filter-btn");
+    const itModes = document.querySelectorAll("#it0021-modes .mode");
+
+    itButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        itButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.dataset.filter;
+        itModes.forEach(mode => {
+          if (filter === "all" || mode.dataset.group === filter) {
+            mode.style.display = "flex";
+          } else {
+            mode.style.display = "none";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
