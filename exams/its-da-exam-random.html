@@ -405,7 +405,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="../index.html" class="back">← Home</a>
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">← Home</a>
     <div>
       <div class="title">Data Analytics</div>
       <div class="sub">Random Exam Mode • Shuffled order, no feedback until submit</div>
@@ -443,13 +443,20 @@
           <div class="score-big" id="scoreBig">--%</div>
           <div style="font-size:1.1rem;font-weight:700;color:#334155;" id="scoreFraction">-- / 68 Correct</div>
           <div class="score-status" id="scoreStatus">Passed</div>
-          <div style="margin-top:20px;">
+          <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
             <button class="b-primary" id="retakeBtn">🔄 Retake Exam (Reshuffle)</button>
+            <button class="b-secondary" id="topHomeBtn" onclick="window.location.href='../index.html'">🏠 Back to Home</button>
           </div>
         </div>
 
         <h3 style="margin-bottom:16px;color:#1e293b;">Question Review & Explanations</h3>
         <div id="reviewContainer"></div>
+
+        <div class="actions" style="margin-top:24px;padding:16px;background:#ffffff;border-radius:12px;border:1px solid #e2e8f0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="b-primary" id="bottomRetakeBtn">🔄 Retake Exam (Reshuffle)</button>
+          <button class="b-secondary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">⬆️ Back to Top</button>
+          <button class="b-secondary" onclick="window.location.href='../index.html'">🏠 Back to Home</button>
+        </div>
       </div>
     </main>
 
@@ -826,7 +833,7 @@
       jumpInput.value = "";
     };
 
-    retakeBtn.onclick = () => {
+    const restartExam = () => {
       if (confirm("Start a new exam with fresh random order?")) {
         localStorage.removeItem(STORAGE_KEY);
         questions = shuffleArray(sourceQuestions);
@@ -839,8 +846,13 @@
         };
         save();
         render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     };
+
+    retakeBtn.onclick = restartExam;
+    const bottomRetake = $("bottomRetakeBtn");
+    if (bottomRetake) bottomRetake.onclick = restartExam;
 
     document.addEventListener("keydown", (e) => {
       if (state.finished) return;

@@ -421,7 +421,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="../index.html" class="back">← Home</a>
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">← Home</a>
     <div>
       <div class="title">CCST Cybersecurity Reviewer</div>
       <div class="sub">Sequential Review • 179 Items • 7 Chapters</div>
@@ -449,6 +449,16 @@
         <button class="b-next" id="nextBtn">Next →</button>
       </div>
       <div class="result" id="resultBox"></div>
+      <div id="completionCard" style="display:none;margin-top:20px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#ffffff 0%,#f8fafc 100%);border:2px solid #6366f1;text-align:center;box-shadow:0 10px 25px -5px rgba(99,102,241,0.15);">
+        <div style="font-size:2.5rem;margin-bottom:8px;">🎉</div>
+        <h3 style="font-size:1.35rem;font-weight:8px;color:#1e293b;margin-bottom:6px;">Section Complete!</h3>
+        <p style="color:#64748b;font-size:0.92rem;margin-bottom:16px;" id="completionStats">You reached the end of this question set.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="b-primary" id="restartSetBtn" style="padding:10px 20px;border-radius:10px;font-weight:700;">🔄 Restart from Beginning</button>
+          <button class="b-secondary" id="resetAllBtn" style="padding:10px 20px;border-radius:10px;font-weight:700;">🧹 Reset All Answers</button>
+          <button class="b-secondary" onclick="window.location.href='../index.html'" style="padding:10px 20px;border-radius:10px;font-weight:700;">🏠 Back to Home</button>
+        </div>
+      </div>
       <div class="auto-next-notice" id="autoNotice" style="display:none">
         ⏱️ Advancing to next question in <strong><span id="countdown">2</span>s</strong>... <button
           onclick="cancelAutoAdvance()"
@@ -771,10 +781,29 @@
       }
 
       prevBtn.disabled = state.current === 0;
-      nextBtn.disabled = state.current === questions.length - 1;
       updateStats();
       renderNav();
       save();
+
+      // Completion Card on last question
+      const completionCard = $("completionCard");
+      if (completionCard) {
+        if (state.current === questions.length - 1) {
+          completionCard.style.display = "block";
+          nextBtn.textContent = "Finish / Start Over ↺";
+          nextBtn.disabled = false;
+          nextBtn.title = "Click to return to the first question";
+          const answeredTotal = Object.keys(state.answers).length + Object.keys(state.interactiveResults).length;
+          $("completionStats").textContent = `You reached the final question (${state.current + 1}/${questions.length}). Total answered: ${answeredTotal}/${questions.length}.`;
+        } else {
+          completionCard.style.display = "none";
+          nextBtn.textContent = "Next →";
+          nextBtn.disabled = false;
+          nextBtn.title = "";
+        }
+      } else {
+        nextBtn.disabled = state.current === questions.length - 1;
+      }
     }
 
     prevBtn.onclick = () => {
@@ -812,6 +841,14 @@
         captureCurrentPending();
         state.current += 1;
         render();
+      } else {
+        // At the last question: allow jumping back to start
+        if (confirm("You are at the last question. Return to Question 1?")) {
+          captureCurrentPending();
+          state.current = 0;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       }
     };
 
@@ -915,6 +952,22 @@
         alert("Progress reset!");
       }
     };
+
+    const restartSetBtn = $("restartSetBtn");
+    if (restartSetBtn) {
+      restartSetBtn.onclick = () => {
+        cancelAutoAdvance();
+        state.current = 0;
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    }
+    const resetAllBtn = $("resetAllBtn");
+    if (resetAllBtn) {
+      resetAllBtn.onclick = () => {
+        resetBtn.click();
+      };
+    }
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight" && state.current < questions.length - 1) {

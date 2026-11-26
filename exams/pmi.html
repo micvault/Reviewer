@@ -315,7 +315,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="../index.html" class="back">← Home</a>
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">← Home</a>
     <div>
       <div class="title">PMI Certification Reviewer</div>
       <div class="sub">PMI Certification Practice Exam</div>
@@ -342,6 +342,16 @@
         <button class="b-next" id="nextBtn">Next →</button>
       </div>
       <div class="result" id="resultBox"></div>
+      <div id="completionCard" style="display:none;margin-top:20px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#ffffff 0%,#f8fafc 100%);border:2px solid #6366f1;text-align:center;box-shadow:0 10px 25px -5px rgba(99,102,241,0.15);">
+        <div style="font-size:2.5rem;margin-bottom:8px;">🎉</div>
+        <h3 style="font-size:1.35rem;font-weight:700;color:#1e293b;margin-bottom:6px;">Review Complete!</h3>
+        <p style="color:#64748b;font-size:0.92rem;margin-bottom:16px;" id="completionStats">You reached the end of this review.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="b-primary" id="restartSetBtn" style="padding:10px 20px;border-radius:10px;font-weight:700;">🔄 Restart from Beginning</button>
+          <button class="b-secondary" id="resetAllBtn" style="padding:10px 20px;border-radius:10px;font-weight:700;">🧹 Reset All Answers</button>
+          <button class="b-secondary" onclick="window.location.href='../index.html'" style="padding:10px 20px;border-radius:10px;font-weight:700;">🏠 Back to Home</button>
+        </div>
+      </div>
       <div class="status" id="loadStatus" style="display:none;"></div>
     </main>
 
@@ -512,10 +522,29 @@
       else renderStudy(q);
 
       prevBtn.disabled = state.current === 0;
-      nextBtn.disabled = state.current === questions.length - 1;
       updateStats();
       renderNav();
       save();
+
+      // Completion Card on last question
+      const completionCard = $("completionCard");
+      if (completionCard) {
+        if (state.current === questions.length - 1) {
+          completionCard.style.display = "block";
+          nextBtn.textContent = "Finish / Start Over ↺";
+          nextBtn.disabled = false;
+          nextBtn.title = "Click to return to the first question";
+          const answeredTotal = Object.keys(state.answers).length + Object.keys(state.interactiveResults).length + Object.keys(state.viewedStudy).length;
+          $("completionStats").textContent = `You reached the final question (${state.current + 1}/${questions.length}). Total answered: ${answeredTotal}/${questions.length}.`;
+        } else {
+          completionCard.style.display = "none";
+          nextBtn.textContent = "Next →";
+          nextBtn.disabled = false;
+          nextBtn.title = "";
+        }
+      } else {
+        nextBtn.disabled = state.current === questions.length - 1;
+      }
     }
 
     prevBtn.onclick = () => {
@@ -529,6 +558,12 @@
       if (state.current < questions.length - 1) {
         state.current += 1;
         render();
+      } else {
+        if (confirm("You are at the last question. Return to Question 1?")) {
+          state.current = 0;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       }
     };
 
@@ -566,6 +601,21 @@
         alert("Progress has been reset!");
       }
     };
+
+    const restartSetBtn = $("restartSetBtn");
+    if (restartSetBtn) {
+      restartSetBtn.onclick = () => {
+        state.current = 0;
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    }
+    const resetAllBtn = $("resetAllBtn");
+    if (resetAllBtn) {
+      resetAllBtn.onclick = () => {
+        resetBtn.click();
+      };
+    }
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight" && state.current < questions.length - 1) { state.current++; render(); }
