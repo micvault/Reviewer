@@ -209,10 +209,18 @@
 
     .actions {
       display: flex;
-      gap: 12px;
-      margin-top: 24px;
+      gap: 10px;
+      margin-top: 20px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
+      align-items: center;
     }
+
+    /* Hide separate check buttons rendered by interactive components in favor of unified .actions */
+    .ia-check-btn {
+      display: none !important;
+    }
+
     button {
       padding: 12px 20px;
       border-radius: 14px;
@@ -257,7 +265,9 @@
       background: #ffffff;
       border: 2px solid #667eea;
       color: #667eea;
-      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .b-next:hover:not(:disabled) {
       background: #667eea;
@@ -704,8 +714,25 @@
       }
     }
 
+    function relocateInteractiveFeedback() {
+      const feedbackEls = contentArea.querySelectorAll(".ia-result, .order-correct-answer, .match-correct-answer, .classify-correct-answer");
+      if (feedbackEls.length > 0) {
+        resultBox.innerHTML = "";
+        feedbackEls.forEach(el => {
+          resultBox.appendChild(el);
+        });
+        resultBox.className = "result show";
+
+        const bottomAdvance = document.createElement("div");
+        bottomAdvance.style.marginTop = "14px";
+        bottomAdvance.style.display = "flex";
+        bottomAdvance.style.justifyContent = "flex-end";
+        bottomAdvance.innerHTML = `<button class="b-next" style="padding:8px 16px;font-size:0.85rem;" onclick="document.getElementById('nextBtn').click()">Next Question &rarr;</button>`;
+        resultBox.appendChild(bottomAdvance);
+      }
+    }
+
     function renderInteractive(q) {
-      submitBtn.style.display = "none";
       const completed = !!state.interactiveResults[q.number];
       const draft = state.pendingInteractive ? state.pendingInteractive[q.number] : null;
 
@@ -722,8 +749,9 @@
           save();
           updateStats();
           renderNav();
-          // In sequential mode, no auto-advance by default
-      // startAutoAdvance();
+          relocateInteractiveFeedback();
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Already Answered";
         },
         state.interactiveAnswers[q.number],
         (draftData) => {
@@ -733,6 +761,30 @@
         },
         draft
       );
+
+      if (completed) {
+        relocateInteractiveFeedback();
+      }
+
+      // Sync submitBtn label with selection count (for multichoice)
+      const updateSubmitText = () => {
+        if (state.interactiveResults[q.number]) return;
+        const checkBtn = contentArea.querySelector(".ia-check-btn");
+        if (checkBtn) {
+          const match = checkBtn.textContent.match(/\((\d+)\s+selected\)/i);
+          if (match) {
+            submitBtn.textContent = `Submit Answer (${match[1]} selected)`;
+          } else {
+            submitBtn.textContent = "Submit Answer";
+          }
+        }
+      };
+      contentArea.addEventListener("click", updateSubmitText);
+      updateSubmitText();
+
+      submitBtn.style.display = "inline-flex";
+      submitBtn.disabled = completed;
+      submitBtn.textContent = completed ? "Already Answered" : "Submit Answer";
     }
 
     function render() {
@@ -834,6 +886,22 @@
     submitBtn.onclick = () => {
       cancelAutoAdvance();
       const q = questions[state.current];
+
+      // Interactive item submission
+      if (q.type !== "mcq") {
+        const checkBtn = contentArea.querySelector(".ia-check-btn");
+        if (checkBtn) {
+          if (checkBtn.disabled) {
+            resultBox.className = "result show wrong";
+            resultBox.innerHTML = "<strong>Please select your answer(s) before submitting.</strong>";
+            return;
+          }
+          checkBtn.click();
+          relocateInteractiveFeedback();
+        }
+        return;
+      }
+
       const selected = contentArea.querySelector('input[name="opt"]:checked');
       if (!selected) {
         resultBox.className = "result show wrong";
