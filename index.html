@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Exam Reviewers | CertExams</title>
+  <title>Exam Reviewers | Certification</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -311,22 +316,52 @@
     }
 
     @media (max-width: 680px) {
-      body { padding: 24px 12px; }
-      .category-header { padding: 14px 16px; }
-      .panel-body { padding: 14px 16px 18px; }
-      .mode { flex-direction: column; align-items: stretch; gap: 12px; }
-      .btn { text-align: center; padding: 9px 16px; }
-      .header-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .filter-wrap { width: 100%; justify-content: space-between; }
-      .category-select { flex: 1; }
+      body {
+        padding: 24px 12px;
+      }
+
+      .category-header {
+        padding: 14px 16px;
+      }
+
+      .panel-body {
+        padding: 14px 16px 18px;
+      }
+
+      .mode {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .btn {
+        text-align: center;
+        padding: 9px 16px;
+      }
+
+      .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .filter-wrap {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .category-select {
+        flex: 1;
+      }
     }
   </style>
 </head>
+
 <body>
   <main class="wrap">
     <header class="header-bar">
       <div>
-        <h1 class="site-title">CertExams Portal</h1>
+        <h1 class="site-title">Certification Reviewers</h1>
         <p class="site-sub">Select your exam category and study mode below</p>
       </div>
       <div class="filter-wrap">
@@ -348,7 +383,8 @@
         <summary class="category-header">
           <div class="cat-title-wrap">
             <div class="cat-icon-badge">
-              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round">
                 <circle cx="12" cy="8" r="6"></circle>
                 <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
               </svg>
@@ -360,7 +396,8 @@
           </div>
           <div class="cat-right">
             <span class="badge-count">CCST &amp; ITS-DA • 6 modes</span>
-            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </div>
@@ -380,7 +417,8 @@
             <article class="mode" data-group="ccst">
               <div class="mode-main">
                 <div class="mode-title">CCST Cybersecurity — Sequential Review</div>
-                <div class="mode-desc">All 179 questions in original order with immediate feedback, chapter filtering (7 chapters), and verified explanations.</div>
+                <div class="mode-desc">All 179 questions in original order with immediate feedback, chapter filtering (7
+                  chapters), and verified explanations.</div>
               </div>
               <a class="btn" href="exams/ccst-cybersecurity.html">Open</a>
             </article>
@@ -388,7 +426,8 @@
             <article class="mode" data-group="ccst">
               <div class="mode-main">
                 <div class="mode-title">CCST Cybersecurity — Random Exam Mode</div>
-                <div class="mode-desc">Full 179-item mock exam simulation with shuffled order, scoring, and comprehensive results breakdown.</div>
+                <div class="mode-desc">Full 179-item mock exam simulation with shuffled order, scoring, and
+                  comprehensive results breakdown.</div>
               </div>
               <a class="btn" href="exams/ccst-cybersecurity-exam-random.html">Open</a>
             </article>
@@ -396,7 +435,8 @@
             <article class="mode" data-group="ccst">
               <div class="mode-main">
                 <div class="mode-title">CCST Cybersecurity — Quick Review (Random)</div>
-                <div class="mode-desc">Fast-paced randomized practice with auto-advance countdown and immediate feedback.</div>
+                <div class="mode-desc">Fast-paced randomized practice with auto-advance countdown and immediate
+                  feedback.</div>
               </div>
               <a class="btn" href="exams/ccst-cybersecurity-quick-random.html">Open</a>
             </article>
@@ -405,7 +445,8 @@
             <article class="mode" data-group="its-da">
               <div class="mode-main">
                 <div class="mode-title">IT Specialist: Data Analytics — Sequential Review</div>
-                <div class="mode-desc">Original order with immediate feedback, interactive multi-select, matching, and full explanations.</div>
+                <div class="mode-desc">Original order with immediate feedback, interactive multi-select, matching, and
+                  full explanations.</div>
               </div>
               <a class="btn" href="exams/its-da.html">Open</a>
             </article>
@@ -413,7 +454,8 @@
             <article class="mode" data-group="its-da">
               <div class="mode-main">
                 <div class="mode-title">IT Specialist: Data Analytics — Random Exam Mode</div>
-                <div class="mode-desc">Shuffled test simulation with no feedback until final submit and results breakdown.</div>
+                <div class="mode-desc">Shuffled test simulation with no feedback until final submit and results
+                  breakdown.</div>
               </div>
               <a class="btn" href="exams/its-da-exam-random.html">Open</a>
             </article>
@@ -434,7 +476,8 @@
         <summary class="category-header">
           <div class="cat-title-wrap">
             <div class="cat-icon-badge">
-              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round">
                 <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
                 <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
                 <path d="M4 22h16"></path>
@@ -450,7 +493,8 @@
           </div>
           <div class="cat-right">
             <span class="badge-count">PMI • 6 modes</span>
-            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </div>
@@ -518,7 +562,8 @@
         <summary class="category-header">
           <div class="cat-title-wrap">
             <div class="cat-icon-badge">
-              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="cat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round">
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
                 <path d="M6 6h10"></path>
                 <path d="M6 10h10"></path>
@@ -531,7 +576,8 @@
           </div>
           <div class="cat-right">
             <span class="badge-count">IT0021 • 6 modes</span>
-            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </div>
@@ -602,7 +648,7 @@
 
     </div>
 
-    <p class="foot">CertExams</p>
+    <p class="foot">Goodluck!</p>
   </main>
 
   <script>
@@ -662,4 +708,5 @@
     setupPillFilter("panel-summative", "it0021-modes");
   </script>
 </body>
+
 </html>
