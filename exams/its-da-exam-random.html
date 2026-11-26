@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ITS-DA Certification Exam (Random Exam Mode)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <style>
     * {
       box-sizing: border-box;
@@ -405,7 +406,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">← Home</a>
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">Back to Home</a>
     <div>
       <div class="title">Data Analytics</div>
       <div class="sub">Random Exam Mode • Shuffled order, no feedback until submit</div>
@@ -420,7 +421,7 @@
       <!-- Question View -->
       <div id="questionView">
         <div class="exam-mode-notice">
-          📝 Exam Mode: Questions are in shuffled order. Answers are evaluated upon final submission.
+          Exam Mode: Questions are in shuffled order. Answers are evaluated upon final submission.
         </div>
         <div class="qmeta">
           <span class="badge" id="qNumber">Question 1</span>
@@ -429,9 +430,9 @@
         <div class="qtext" id="qText">Loading questions...</div>
         <div id="contentArea"></div>
         <div class="actions">
-          <button class="b-secondary" id="prevBtn">← Previous</button>
-          <button class="b-primary" id="nextBtn">Next →</button>
-          <button class="b-finish" id="finishBtn">Finish Exam 🎯</button>
+          <button class="b-secondary" id="prevBtn">Previous</button>
+          <button class="b-primary" id="nextBtn">Next</button>
+          <button class="b-finish" id="finishBtn">Finish Exam</button>
         </div>
         <div class="status" id="loadStatus" style="display:none;"></div>
       </div>
@@ -444,8 +445,8 @@
           <div style="font-size:1.1rem;font-weight:700;color:#334155;" id="scoreFraction">-- / 68 Correct</div>
           <div class="score-status" id="scoreStatus">Passed</div>
           <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <button class="b-primary" id="retakeBtn">🔄 Retake Exam (Reshuffle)</button>
-            <button class="b-secondary" id="topHomeBtn" onclick="window.location.href='../index.html'">🏠 Back to Home</button>
+            <button class="b-primary" id="retakeBtn">Retake Exam (Reshuffle)</button>
+            <button class="b-secondary" id="topHomeBtn" onclick="window.location.href='../index.html'">Back to Home</button>
           </div>
         </div>
 
@@ -453,9 +454,9 @@
         <div id="reviewContainer"></div>
 
         <div class="actions" style="margin-top:24px;padding:16px;background:#ffffff;border-radius:12px;border:1px solid #e2e8f0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <button class="b-primary" id="bottomRetakeBtn">🔄 Retake Exam (Reshuffle)</button>
-          <button class="b-secondary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">⬆️ Back to Top</button>
-          <button class="b-secondary" onclick="window.location.href='../index.html'">🏠 Back to Home</button>
+          <button class="b-primary" id="bottomRetakeBtn">Retake Exam (Reshuffle)</button>
+          <button class="b-secondary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">Back to Top</button>
+          <button class="b-secondary" onclick="window.location.href='../index.html'">Back to Home</button>
         </div>
       </div>
     </main>
@@ -463,11 +464,12 @@
     <aside class="card side" id="sidePanel">
       <input class="search" id="jumpInput" placeholder="Jump to question #" inputmode="numeric" />
       <div class="grid" id="navGrid"></div>
-      <button class="b-finish" id="sideFinishBtn" style="width:100%;margin-top:16px;">Finish Exam 🎯</button>
+      <button class="b-finish" id="sideFinishBtn" style="width:100%;margin-top:16px;">Finish Exam</button>
     </aside>
   </div>
 
   <script src="./its-da-questions.js"></script>
+  <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
   <script>
     const STORAGE_KEY = "its-da-exam-random-mode-v1";
@@ -771,7 +773,7 @@
 
         item.innerHTML = `
           <div class="review-q">
-            #${index + 1} (Original #${q.number}) — ${evalRes.correct ? "✓ Correct" : "✗ Incorrect"}
+            #${index + 1} (Original #${q.number}) — ${evalRes.correct ? "Correct" : "Incorrect"}
           </div>
           <div style="margin-bottom:10px;font-size:0.95rem;color:#1e293b;">${q.question}</div>
           <div class="review-ans">
@@ -790,7 +792,7 @@
       // 70% passing threshold
       if (pct >= 70) {
         scoreStatus.className = "score-status pass";
-        scoreStatus.textContent = "PASSED 🎉";
+        scoreStatus.textContent = "PASSED ";
       } else {
         scoreStatus.className = "score-status fail";
         scoreStatus.textContent = "NEEDS PRACTICE";

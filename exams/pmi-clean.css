@@ -145,3 +145,38 @@ button {
     padding: 8px 0 !important;
   }
 }
+
+/* Inline SVG Icon styling */
+.icon-svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -0.15em;
+  margin-right: 0.35em;
+}
+.icon-svg.no-margin {
+  margin-right: 0;
+}
+.icon-badge-svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  vertical-align: -0.2em;
+  margin-right: 0.4em;
+}
+.icon-badge-svg.pass {
+  background: #dcfce7;
+  color: #15803d;
+}
+.icon-badge-svg.fail {
+  background: #fee2e2;
+  color: #b91c1c;
+}

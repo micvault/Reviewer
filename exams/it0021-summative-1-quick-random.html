@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IT0021 - Summative 1 (Quick Review Random)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -342,7 +343,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">← Home</a>
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">Back to Home</a>
     <div>
       <div class="title">IT0021 - Summative 1 (Quick Review Random)</div>
       <div class="sub">Auto-advance mode with shuffled order</div>
@@ -363,13 +364,13 @@
       <p class="qtext" id="qText">Loading questions...</p>
       <div id="contentArea"></div>
       <div class="actions">
-        <button class="b-secondary" id="prevBtn">← Previous</button>
-        <button class="b-primary" id="submitBtn">Submit & Next →</button>
-        <button class="b-reveal" id="revealBtn" style="display:none">Reveal & Next →</button>
+        <button class="b-secondary" id="prevBtn">Previous</button>
+        <button class="b-primary" id="submitBtn">Submit & Next</button>
+        <button class="b-reveal" id="revealBtn" style="display:none">Reveal & Next</button>
       </div>
       <div class="result" id="resultBox"></div>
       <div class="auto-next-notice" id="autoNextNotice" style="display:none;">
-        ⚡ Auto-advancing in <span id="countdown">2</span> seconds...
+        Auto-advancing in <span id="countdown">2</span> seconds...
       </div>
       <div class="status" id="loadStatus" style="display:none;"></div>
     </main>
@@ -377,12 +378,13 @@
     <aside class="card side">
       <input class="search" id="jumpInput" placeholder="Jump to position #" inputmode="numeric" />
       <div class="grid" id="navGrid"></div>
-      <button class="shuffle-btn" id="shuffleBtn">🔀 Reshuffle Questions</button>
-      <button class="reset-btn" id="resetBtn">🔄 Reset Progress</button>
+      <button class="shuffle-btn" id="shuffleBtn">Reshuffle Questions</button>
+      <button class="reset-btn" id="resetBtn">Reset Progress</button>
     </aside>
   </div>
 
   <script src="./it0021-summative-1-questions.js"></script>
+  <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
   <script>
     const STORAGE_KEY = "it0021-summative-1-quick-random-v1";
@@ -522,7 +524,7 @@
         });
 
         resultBox.className = `result show ${existing.correct ? "correct" : "wrong"}`;
-        resultBox.innerHTML = `<strong>${existing.correct ? "✓ Correct!" : "✗ Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+        resultBox.innerHTML = `<strong>${existing.correct ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
         submitBtn.style.display = "inline-flex";
         submitBtn.disabled = true;
         submitBtn.textContent = "Already Answered";
@@ -531,7 +533,7 @@
         resultBox.innerHTML = "";
         submitBtn.style.display = "inline-flex";
         submitBtn.disabled = false;
-        submitBtn.textContent = "Submit & Next →";
+        submitBtn.textContent = "Submit & Next";
       }
 
       revealBtn.style.display = "none";
@@ -564,7 +566,7 @@
 
       submitBtn.style.display = "none";
       revealBtn.style.display = "inline-flex";
-      revealBtn.textContent = state.viewedStudy[q.number] ? "Answer Revealed" : "Reveal & Next →";
+      revealBtn.textContent = state.viewedStudy[q.number] ? "Answer Revealed" : "Reveal & Next";
       revealBtn.disabled = !!state.viewedStudy[q.number];
 
       if (state.viewedStudy[q.number]) {
@@ -630,7 +632,7 @@
 
       const isCorrect = selected.value === q.answer;
       resultBox.className = `result show ${isCorrect ? "correct" : "wrong"}`;
-      resultBox.innerHTML = `<strong>${isCorrect ? "✓ Correct!" : "✗ Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+      resultBox.innerHTML = `<strong>${isCorrect ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
       submitBtn.disabled = true;
       submitBtn.textContent = "Already Answered";
       updateStats();

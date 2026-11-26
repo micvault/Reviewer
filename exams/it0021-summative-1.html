@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IT0021 - Summative 1 (Exam Mode)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -452,7 +453,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="../index.html" class="back">← Home</a>
+    <a href="../index.html" class="back">Back to Home</a>
     <div>
       <div class="title">IT0021 - Summative 1 (Exam Mode)</div>
       <div class="sub">Clean exam layout • no feedback until submit</div>
@@ -467,7 +468,7 @@
       <div id="questionView">
         <div class="exam-progress"><div class="exam-progress-fill" id="examProgressFill"></div></div>
         <div class="exam-mode-notice">
-          📝 Exam Mode: No feedback until you finish all questions
+          Exam Mode: No feedback until you finish all questions
         </div>
         <div class="qmeta">
           <span class="badge" id="qNumber">Question -</span>
@@ -476,9 +477,9 @@
         <p class="qtext" id="qText">Loading questions...</p>
         <div id="contentArea"></div>
         <div class="actions">
-          <button class="b-secondary" id="prevBtn">← Previous</button>
-          <button class="b-primary" id="nextBtn">Next →</button>
-          <button class="b-finish" id="submitBtn">Submit Exam 🎯</button>
+          <button class="b-secondary" id="prevBtn">Previous</button>
+          <button class="b-primary" id="nextBtn">Next</button>
+          <button class="b-finish" id="submitBtn">Submit Exam</button>
         </div>
         <div class="status" id="loadStatus" style="display:none;"></div>
       </div>
@@ -491,12 +492,12 @@
         </div>
 
         <div class="review-section">
-          <div class="review-title">✅ Correct Answers (<span id="correctCount">0</span>)</div>
+          <div class="review-title">Correct Answers (<span id="correctCount">0</span>)</div>
           <div id="correctList"></div>
         </div>
 
         <div class="review-section">
-          <div class="review-title">❌ Incorrect Answers (<span id="wrongCount">0</span>)</div>
+          <div class="review-title">Incorrect Answers (<span id="wrongCount">0</span>)</div>
           <div id="wrongList"></div>
         </div>
 
@@ -510,11 +511,12 @@
     <aside class="card side">
       <input class="search" id="jumpInput" placeholder="Jump to question #" inputmode="numeric" />
       <div class="grid" id="navGrid"></div>
-      <button class="reset-btn" id="resetBtn">🔄 Reset Exam</button>
+      <button class="reset-btn" id="resetBtn">Reset Exam</button>
     </aside>
   </div>
 
   <script src="./it0021-summative-1-questions.js"></script>
+  <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
   <script>
     const STORAGE_KEY = "it0021-summative-1-exam-v1";
@@ -806,7 +808,7 @@
           const title = (bucket.querySelector(".classify-bucket-title")?.textContent || "").trim();
           if (!title) return;
           buckets[title] = [...bucket.querySelectorAll(".classify-placed-item")]
-            .map(el => (el.textContent || "").replace("✕", "").trim())
+            .map(el => (el.textContent || "").replace("×", "").trim())
             .filter(Boolean);
         });
         state.interactiveAnswers[q.number] = { buckets };
@@ -845,13 +847,13 @@
         if (q.type === "mcq") {
           item.innerHTML = `
             <div class="review-q">Q${q.number}: ${q.question}</div>
-            <div class="review-ans">✅ Your answer: <strong>${result.selected}. ${q.options[result.selected]}</strong></div>
+            <div class="review-ans"><strong>Your answer:</strong> <strong>${result.selected}. ${q.options[result.selected]}</strong></div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;
         } else {
           item.innerHTML = `
             <div class="review-q">Q${q.number}: ${q.question}</div>
-            <div class="review-ans">✅ Your interactive response is correct.</div>
+            <div class="review-ans"><strong>Your response is correct.</strong></div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;
         }
@@ -868,16 +870,16 @@
             <div class="review-q">Q${q.number}: ${q.question}</div>
             <div class="review-ans">
               ${hasAnswer
-                ? `❌ Your answer: <strong>${result.selected}. ${q.options[result.selected]}</strong><br/>`
-                : `❌ Your answer: <strong>(unanswered)</strong><br/>`}
-              ✅ Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong>
+                ? `<strong>Your answer:</strong> <strong>${result.selected}. ${q.options[result.selected]}</strong><br/>`
+                : `<strong>Your answer:</strong> <strong>(unanswered)</strong><br/>`}
+              <strong>Correct answer:</strong> <strong>${q.answer}. ${q.options[q.answer]}</strong>
             </div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;
         } else {
           item.innerHTML = `
             <div class="review-q">Q${q.number}: ${q.question}</div>
-            <div class="review-ans">❌ Your interactive response is incomplete or incorrect.</div>
+            <div class="review-ans"><strong>Your response is incorrect.</strong></div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;
         }
