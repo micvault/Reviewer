@@ -455,6 +455,7 @@
   <script src="./it0021-summative-1-questions.js"></script>
   <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
+  <script src="./format-helper.js"></script>
   <script>
     const STORAGE_KEY = "it0021-summative-1-random-exam-v1";
     const LAST_SCORE_KEY = "it0021-summative-1-random-last-score-v1";
@@ -689,7 +690,7 @@
       const q = questions[state.current];
       qNumber.textContent = `Question ${state.current + 1} of ${questions.length}`;
       qType.textContent = q.type === "mcq" ? "Multiple Choice" : q.type === "order" ? "Ordering" : q.type === "match" ? "Matching" : q.type === "classify" ? "Classification" : "Study Item";
-      qText.textContent = q.question;
+      qText.innerHTML = (typeof renderFormattedText === "function") ? renderFormattedText(q.question) : q.question;
 
       contentArea.innerHTML = "";
 
@@ -815,13 +816,13 @@
         item.className = "review-item correct";
         if (q.type === "mcq") {
           item.innerHTML = `
-            <div class="review-q">Q${q.number}: ${q.question}</div>
+            <div class="review-q">Q${q.number}: ${typeof renderFormattedText === "function" ? renderFormattedText(q.question) : q.question}</div>
             <div class="review-ans"><strong>Your answer:</strong> <strong>${result.selected}. ${q.options[result.selected]}</strong></div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;
         } else {
           item.innerHTML = `
-            <div class="review-q">Q${q.number}: ${q.question}</div>
+            <div class="review-q">Q${q.number}: ${typeof renderFormattedText === "function" ? renderFormattedText(q.question) : q.question}</div>
             <div class="review-ans"><strong>Your response is correct.</strong></div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;
@@ -836,7 +837,7 @@
         if (q.type === "mcq") {
           const hasAnswer = !!result.selected;
           item.innerHTML = `
-            <div class="review-q">Q${q.number}: ${q.question}</div>
+            <div class="review-q">Q${q.number}: ${typeof renderFormattedText === "function" ? renderFormattedText(q.question) : q.question}</div>
             <div class="review-ans">
               ${hasAnswer
                 ? `<strong>Your answer:</strong> <strong>${result.selected}. ${q.options[result.selected]}</strong><br/>`
@@ -847,7 +848,7 @@
           `;
         } else {
           item.innerHTML = `
-            <div class="review-q">Q${q.number}: ${q.question}</div>
+            <div class="review-q">Q${q.number}: ${typeof renderFormattedText === "function" ? renderFormattedText(q.question) : q.question}</div>
             <div class="review-ans"><strong>Your response is incorrect.</strong></div>
             ${q.explanation ? `<div class="review-exp">${q.explanation}</div>` : ''}
           `;

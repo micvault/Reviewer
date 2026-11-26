@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java 98-388 Reviewer (Sequential Review)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #1a202c;
+      min-height: 100vh;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #ffffff;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .back {
+      text-decoration: none;
+      color: #667eea;
+      padding: 10px 18px;
+      border: 2px solid #667eea;
+      border-radius: 12px;
+      background: #ffffff;
+      font-size: .9rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+    .back:hover {
+      background: #667eea;
+      color: #ffffff;
+      transform: translateX(-2px);
+    }
+
+    .title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #1a202c;
+    }
+
+    .sub {
+      font-size: .85rem;
+      color: #4a5568;
+    }
+
+    .stats {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 100px;
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #2d3748;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: static !important;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .qcard {
+      padding: 32px;
+    }
+
+    .qmeta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 9px 16px;
+      border-radius: 100px;
+      font-size: .85rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .qtype {
+      padding: 9px 16px;
+      border-radius: 100px;
+      font-size: .85rem;
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      color: #4a5568;
+      font-weight: 700;
+    }
+    .qtext {
+      font-size: 1.06rem;
+      font-weight: 500;
+      line-height: 1.65;
+      color: #1a202c;
+      margin-bottom: 24px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 2px solid #e2e8f0;
+      background: #f7fafc;
+      cursor: pointer;
+      font-size: .95rem;
+      font-weight: 600;
+      color: #2d3748;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .opt:hover:not(.disabled) {
+      border-color: #667eea;
+      background: #eef2ff;
+      transform: translateX(4px);
+    }
+    .opt.selected,
+    .opt:has(input[type="radio"]:checked) {
+      border-color: #667eea !important;
+      background: #eef2ff !important;
+      color: #3730a3 !important;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25) !important;
+    }
+    .opt.correct {
+      background: #f0fff4 !important;
+      border-color: #48bb78 !important;
+      color: #22543d !important;
+    }
+    .opt.wrong {
+      background: #fff5f5 !important;
+      border-color: #f56565 !important;
+      color: #742a2a !important;
+    }
+
+    .opt.disabled {
+      cursor: default;
+      transform: none !important;
+    }
+
+    .opt-letter {
+      font-weight: 800;
+      color: #667eea;
+      min-width: 24px;
+    }
+    .opt input[type="radio"] {
+      appearance: auto;
+      -webkit-appearance: auto;
+      accent-color: #667eea;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 0;
+      font-size: .92rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .b-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+    }
+
+    .b-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .b-primary:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .b-secondary {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      color: #4a5568;
+    }
+    .b-secondary:hover:not(:disabled) {
+      border-color: #cbd5e0;
+      transform: translateY(-2px);
+    }
+
+    .b-secondary:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .b-next {
+      background: #ffffff;
+      border: 2px solid #667eea;
+      color: #667eea;
+      margin-left: auto;
+    }
+    .b-next:hover:not(:disabled) {
+      background: #667eea;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .b-next:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      font-size: .95rem;
+      line-height: 1.6;
+      font-weight: 500;
+      display: none;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result.correct {
+      background: #f0fff4;
+      border: 2px solid #48bb78;
+      color: #22543d;
+    }
+    .result.wrong {
+      background: #fff5f5;
+      border: 2px solid #f56565;
+      color: #742a2a;
+    }
+
+    .side {
+      padding: 24px;
+      position: sticky;
+      top: 96px;
+    }
+    .search {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: .9rem;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .search:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+      max-height: calc(100vh - 360px);
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .nav {
+      padding: 11px 0;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      color: #4a5568;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: .85rem;
+      transition: all 0.2s ease;
+    }
+    .nav:hover {
+      border-color: #667eea;
+      transform: scale(1.05);
+    }
+    .nav.current {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: #667eea;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .nav.done {
+      background: #f0fff4;
+      border-color: #48bb78;
+      color: #22543d;
+    }
+    .nav.wrong {
+      background: #fff5f5;
+      border-color: #f56565;
+      color: #742a2a;
+    }
+
+    .status {
+      margin-top: 12px;
+      color: #718096;
+      font-size: .9rem;
+    }
+
+    .shuffle-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      background: #ffffff;
+      color: #b45309;
+      font-size: .9rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .shuffle-btn:hover {
+      background: #fffaf0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .reset-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 2px solid #f56565;
+      background: #ffffff;
+      color: #c53030;
+      font-size: .9rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .reset-btn:hover {
+      background: #fff5f5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+    }
+
+    .auto-next-notice {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      color: #92400e;
+      font-size: .88rem;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+  <link rel="stylesheet" href="./pmi-clean.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">Back to Home</a>
+    <div>
+      <div class="title">Java 98-388 Reviewer</div>
+      <div class="sub">Sequential Review • 42 Items • 5 Topics</div>
+    </div>
+    <div class="stats">
+      <div class="pill" id="pillProgress">0 / 42 answered</div>
+      <div class="pill" id="pillCorrect" style="color:#22543d;background:#f0fff4;border-color:#48bb78">Correct: 0</div>
+      <div class="pill" id="pillWrong" style="color:#742a2a;background:#fff5f5;border-color:#f56565">Needs Review: 0
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <main class="card qcard">
+      <div class="qmeta">
+        <span class="badge" id="qNumber">Question 1</span>
+        <span class="qtype" id="qType">Loading...</span>
+        <span class="qtype" id="qChapter" style="background:#e0e7ff;border-color:#c7d2fe;color:#3730a3;">Chapter</span>
+      </div>
+      <div class="qtext" id="qText">Loading questions...</div>
+      <div id="contentArea"></div>
+      <div class="actions">
+        <button class="b-secondary" id="prevBtn">Previous</button>
+        <button class="b-primary" id="submitBtn">Submit Answer</button>
+        <button class="b-next" id="nextBtn">Next</button>
+      </div>
+      <div class="result" id="resultBox"></div>
+      <div id="completionCard" style="display:none;margin-top:20px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#ffffff 0%,#f8fafc 100%);border:2px solid #6366f1;text-align:center;box-shadow:0 10px 25px -5px rgba(99,102,241,0.15);">
+        <div style="font-size:2.5rem;margin-bottom:8px;"></div>
+        <h3 style="font-size:1.35rem;font-weight:8px;color:#1e293b;margin-bottom:6px;">Section Complete!</h3>
+        <p style="color:#64748b;font-size:0.92rem;margin-bottom:16px;" id="completionStats">You reached the end of this question set.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="b-primary" id="restartSetBtn" style="padding:10px 20px;border-radius:10px;font-weight:700;">Restart from Beginning</button>
+          <button class="b-secondary" id="resetAllBtn" style="padding:10px 20px;border-radius:10px;font-weight:700;">Reset All Answers</button>
+          <button class="b-secondary" onclick="window.location.href='../index.html'" style="padding:10px 20px;border-radius:10px;font-weight:700;">Back to Home</button>
+        </div>
+      </div>
+      <div class="auto-next-notice" id="autoNotice" style="display:none">
+        Advancing to next question in <strong><span id="countdown">2</span>s</strong>... <button
+          onclick="cancelAutoAdvance()"
+          style="padding:4px 8px;font-size:0.78rem;background:#fff;border:1px solid #b45309;color:#b45309;border-radius:6px;cursor:pointer;margin-left:8px;">Pause</button>
+      </div>
+      <div class="status" id="loadStatus" style="display:none;"></div>
+    </main>
+
+    <aside class="card side">
+      
+      <div style="margin-bottom:12px;">
+        <label for="chapterSelect" style="display:block;font-size:0.82rem;font-weight:700;color:#475569;margin-bottom:6px;">Filter by Chapter:</label>
+        <select id="chapterSelect" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:12px;font-size:0.85rem;font-weight:600;color:#1e293b;background:#fff;cursor:pointer;outline:none;">
+          <option value="all">All Chapters (179 Items)</option>
+          <option value="1">Ch 1: Network Defense & Wireless Security (36)</option>
+          <option value="2">Ch 2: Identity Access & Professional Practice (31)</option>
+          <option value="3">Ch 3: Cryptography & Information Protection (24)</option>
+          <option value="4">Ch 4: Threats Attacks & Adversaries (42)</option>
+          <option value="5">Ch 5: Endpoint Tools & Troubleshooting (13)</option>
+          <option value="6">Ch 6: Vulnerability Assessment & Risk (19)</option>
+          <option value="7">Ch 7: Incident Response & Recovery (14)</option>
+        </select>
+      </div>
+      <input class="search" id="jumpInput" placeholder="Jump to question #" inputmode="numeric" />
+      <div class="grid" id="navGrid"></div>
+      <button class="shuffle-btn" id="shuffleBtn">Reshuffle Order</button>
+      <button class="reset-btn" id="resetBtn">Reset Progress</button>
+    </aside>
+  </div>
+
+  <script src="./java-98-388-questions.js"></script>
+  <script src="./cert-icons.js"></script>
+  <script src="./pmi-interactive.js"></script>
+  <script src="./format-helper.js"></script>
+  <script>
+    const STORAGE_KEY = "java-98-388-sequential-v1";
+    const sourceQuestions = Array.isArray(window.JAVA_98_388_QUESTIONS) ? window.JAVA_98_388_QUESTIONS : [];
+    let questions = [];
+    let state = {
+      current: 0,
+      answers: {},
+      pendingAnswers: {},
+      interactiveResults: {},
+      interactiveAnswers: {},
+      pendingInteractive: {},
+      questionOrder: []
+    };
+    let autoAdvanceTimer = null;
+
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (saved && typeof saved === "object" && Array.isArray(saved.questionOrder) && saved.questionOrder.length === sourceQuestions.length) {
+        state = {
+          current: Number.isInteger(saved.current) ? saved.current : 0,
+          answers: saved.answers || {},
+          pendingAnswers: saved.pendingAnswers || {},
+          interactiveResults: saved.interactiveResults || {},
+          interactiveAnswers: saved.interactiveAnswers || {},
+          pendingInteractive: saved.pendingInteractive || {},
+          questionOrder: saved.questionOrder
+        };
+        questions = state.questionOrder.map(idx => sourceQuestions[idx]);
+      } else {
+        questions = [...sourceQuestions];
+        state.questionOrder = questions.map(q => sourceQuestions.indexOf(q));
+      }
+    } catch {
+      questions = [...sourceQuestions];
+      state.questionOrder = questions.map(q => sourceQuestions.indexOf(q));
+    }
+
+    const $ = id => document.getElementById(id);
+    const qNumber = $("qNumber"), qType = $("qType"), qText = $("qText"), contentArea = $("contentArea"),
+      resultBox = $("resultBox"), prevBtn = $("prevBtn"), nextBtn = $("nextBtn"), submitBtn = $("submitBtn"),
+      navGrid = $("navGrid"), jumpInput = $("jumpInput"), loadStatus = $("loadStatus"),
+      pillProgress = $("pillProgress"), pillCorrect = $("pillCorrect"), pillWrong = $("pillWrong"),
+      resetBtn = $("resetBtn"), shuffleBtn = $("shuffleBtn"), autoNotice = $("autoNotice"), countdown = $("countdown");
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function cancelAutoAdvance() {
+      if (autoAdvanceTimer) {
+        clearInterval(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+      }
+      autoNotice.style.display = "none";
+    }
+
+    function startAutoAdvance() {
+      cancelAutoAdvance();
+      if (state.current >= questions.length - 1) return;
+      let timeLeft = 2;
+      countdown.textContent = timeLeft;
+      autoNotice.style.display = "block";
+
+      autoAdvanceTimer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          cancelAutoAdvance();
+          if (state.current < questions.length - 1) {
+            state.current++;
+            render();
+          }
+        } else {
+          countdown.textContent = timeLeft;
+        }
+      }, 1000);
+    }
+
+    function captureCurrentPending() {
+      const q = questions[state.current];
+      if (!q) return;
+      if (q.type === "mcq" && !state.answers[q.number]) {
+        const checked = contentArea.querySelector('input[name="opt"]:checked');
+        if (checked) {
+          if (!state.pendingAnswers) state.pendingAnswers = {};
+          state.pendingAnswers[q.number] = checked.value;
+          save();
+        }
+      }
+    }
+
+    function updateStats() {
+      const total = questions.length;
+      const answeredMcq = Object.keys(state.answers).length;
+      const interactiveAnswered = Object.keys(state.interactiveResults).length;
+      const answered = answeredMcq + interactiveAnswered;
+
+      const correctMcq = Object.values(state.answers).filter(x => x.correct).length;
+      const correctInteractive = Object.values(state.interactiveResults).filter(x => x && x.correct).length;
+      const correct = correctMcq + correctInteractive;
+
+      const wrongMcq = Object.values(state.answers).filter(x => !x.correct).length;
+      const wrongInteractive = Object.values(state.interactiveResults).filter(x => x && !x.correct).length;
+      const wrong = wrongMcq + wrongInteractive;
+
+      pillProgress.textContent = `${answered} / ${total} answered`;
+      pillCorrect.textContent = `Correct: ${correct}`;
+      pillWrong.textContent = `Needs Review: ${wrong}`;
+    }
+
+    function renderNav() {
+      navGrid.innerHTML = "";
+      questions.forEach((q, index) => {
+        const b = document.createElement("button");
+        b.className = "nav";
+        b.textContent = index + 1;
+        b.title = `Question ${q.number}`;
+        if (index === state.current) b.classList.add("current");
+        if (q.type === "mcq" && state.answers[q.number]) {
+          b.classList.add(state.answers[q.number].correct ? "done" : "wrong");
+        }
+        if (PMI_INTERACTIVE.isInteractive(q) && state.interactiveResults[q.number]) {
+          b.classList.add(state.interactiveResults[q.number].correct ? "done" : "wrong");
+        }
+        b.onclick = () => {
+          cancelAutoAdvance();
+          captureCurrentPending();
+          state.current = index;
+          save();
+          render();
+        };
+        navGrid.appendChild(b);
+      });
+    }
+
+    function renderMCQ(q) {
+      const wrap = document.createElement("div");
+      wrap.className = "options";
+      const existing = state.answers[q.number];
+      const pendingVal = state.pendingAnswers ? state.pendingAnswers[q.number] : null;
+
+      Object.entries(q.options).forEach(([key, value]) => {
+        const label = document.createElement("label");
+        label.className = "opt";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "opt";
+        radio.value = key;
+
+        const letter = document.createElement("span");
+        letter.className = "opt-letter";
+        letter.textContent = key + ".";
+
+        const text = document.createElement("span");
+        text.style.flex = "1";
+        text.textContent = value;
+
+        label.append(radio, letter, text);
+
+        if (!existing && pendingVal === key) {
+          radio.checked = true;
+          label.classList.add("selected");
+        }
+
+        radio.addEventListener("change", () => {
+          if (state.answers[q.number]) return;
+          wrap.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+          if (radio.checked) {
+            label.classList.add("selected");
+            if (!state.pendingAnswers) state.pendingAnswers = {};
+            state.pendingAnswers[q.number] = key;
+            save();
+          }
+        });
+
+        label.addEventListener("click", (e) => {
+          if (state.answers[q.number]) return;
+          radio.checked = true;
+          wrap.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+          label.classList.add("selected");
+          if (!state.pendingAnswers) state.pendingAnswers = {};
+          state.pendingAnswers[q.number] = key;
+          save();
+        });
+
+        wrap.appendChild(label);
+      });
+      contentArea.appendChild(wrap);
+
+      if (existing) {
+        wrap.querySelectorAll(".opt").forEach(opt => {
+          const input = opt.querySelector("input");
+          opt.classList.add("disabled");
+          input.disabled = true;
+          if (input.value === existing.selected) {
+            input.checked = true;
+            opt.classList.add("selected");
+          }
+          if (input.value === q.answer) opt.classList.add("correct");
+          if (input.value === existing.selected && !existing.correct) opt.classList.add("wrong");
+        });
+
+        resultBox.className = `result show ${existing.correct ? "correct" : "wrong"}`;
+        resultBox.innerHTML = `<strong>${existing.correct ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
+        submitBtn.style.display = "inline-flex";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Already Answered";
+      } else {
+        resultBox.className = "result";
+        resultBox.innerHTML = "";
+        submitBtn.style.display = "inline-flex";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Answer";
+      }
+    }
+
+    function renderInteractive(q) {
+      submitBtn.style.display = "none";
+      const completed = !!state.interactiveResults[q.number];
+      const draft = state.pendingInteractive ? state.pendingInteractive[q.number] : null;
+
+      PMI_INTERACTIVE.render(
+        q,
+        contentArea,
+        completed,
+        (isCorrect, response) => {
+          state.interactiveResults[q.number] = { correct: !!isCorrect };
+          if (response) state.interactiveAnswers[q.number] = response;
+          if (state.pendingInteractive) {
+            delete state.pendingInteractive[q.number];
+          }
+          save();
+          updateStats();
+          renderNav();
+          // In sequential mode, no auto-advance
+      // startAutoAdvance();
+        },
+        state.interactiveAnswers[q.number],
+        (draftData) => {
+          if (!state.pendingInteractive) state.pendingInteractive = {};
+          state.pendingInteractive[q.number] = draftData;
+          save();
+        },
+        draft
+      );
+    }
+
+    function render() {
+      cancelAutoAdvance();
+      if (!questions.length) return;
+      if (state.current < 0) state.current = 0;
+      if (state.current > questions.length - 1) state.current = questions.length - 1;
+
+      const q = questions[state.current];
+      qNumber.textContent = `Question ${state.current + 1} of ${questions.length} (ID #${q.number})`;
+      qType.textContent = q.type === "mcq" ? "Multiple Choice" :
+        q.type === "multichoice" ? "Multiple Select" :
+          q.type === "order" ? "Ordering" :
+            q.type === "match" ? "Matching" :
+              q.type === "classify" ? "Classification" : "Interactive Item";
+      qText.innerHTML = (typeof renderFormattedText === "function") ? renderFormattedText(q.question) : q.question;
+
+      if (q.chapter && q.chapterName) {
+        $("qChapter").style.display = "inline-block";
+        $("qChapter").textContent = `Ch ${q.chapter}: ${q.chapterName}`;
+      } else {
+        $("qChapter").style.display = "none";
+      }
+
+
+      contentArea.innerHTML = "";
+      resultBox.className = "result";
+      resultBox.innerHTML = "";
+
+      if (q.type === "mcq") {
+        renderMCQ(q);
+      } else {
+        renderInteractive(q);
+      }
+
+      prevBtn.disabled = state.current === 0;
+      updateStats();
+      renderNav();
+      save();
+
+      // Completion Card on last question
+      const completionCard = $("completionCard");
+      if (completionCard) {
+        if (state.current === questions.length - 1) {
+          completionCard.style.display = "block";
+          nextBtn.textContent = "Finish / Start Over";
+          nextBtn.disabled = false;
+          nextBtn.title = "Click to return to the first question";
+          const answeredTotal = Object.keys(state.answers).length + Object.keys(state.interactiveResults).length;
+          $("completionStats").textContent = `You reached the final question (${state.current + 1}/${questions.length}). Total answered: ${answeredTotal}/${questions.length}.`;
+        } else {
+          completionCard.style.display = "none";
+          nextBtn.textContent = "Next";
+          nextBtn.disabled = false;
+          nextBtn.title = "";
+        }
+      } else {
+        nextBtn.disabled = state.current === questions.length - 1;
+      }
+    }
+
+    prevBtn.onclick = () => {
+      cancelAutoAdvance();
+      if (state.current > 0) {
+        captureCurrentPending();
+        state.current -= 1;
+        render();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      cancelAutoAdvance();
+      const q = questions[state.current];
+      // 1. If MCQ and selected but not submitted yet, reveal answer & explanation first
+      if (q && q.type === "mcq" && !state.answers[q.number]) {
+        const hasSelected = !!contentArea.querySelector('input[name="opt"]:checked');
+        if (hasSelected) {
+          submitBtn.click();
+          return; // Stay on current question so user can see feedback & explanation
+        }
+      }
+
+      // 2. If interactive and ready to check, evaluate and reveal first
+      if (q && q.type !== "mcq" && !state.interactiveResults[q.number]) {
+        const checkBtn = contentArea.querySelector(".ia-check-btn");
+        if (checkBtn && !checkBtn.disabled) {
+          checkBtn.click();
+          return; // Stay on current question so user can see feedback & explanation
+        }
+      }
+
+      // 3. Otherwise (already evaluated, or skipping), advance to next question
+      if (state.current < questions.length - 1) {
+        captureCurrentPending();
+        state.current += 1;
+        render();
+      } else {
+        // At the last question: allow jumping back to start
+        if (confirm("You are at the last question. Return to Question 1?")) {
+          captureCurrentPending();
+          state.current = 0;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+    };
+
+    submitBtn.onclick = () => {
+      cancelAutoAdvance();
+      const q = questions[state.current];
+      const selected = contentArea.querySelector('input[name="opt"]:checked');
+      if (!selected) {
+        resultBox.className = "result show wrong";
+        resultBox.innerHTML = "<strong>Please select an answer first.</strong>";
+        return;
+      }
+      state.answers[q.number] = { selected: selected.value, correct: selected.value === q.answer };
+      if (state.pendingAnswers) {
+        delete state.pendingAnswers[q.number];
+      }
+      save();
+
+      // Highlight options
+      const wrap = contentArea.querySelector(".options");
+      wrap.querySelectorAll(".opt").forEach(opt => {
+        const input = opt.querySelector("input");
+        opt.classList.add("disabled");
+        input.disabled = true;
+        if (input.value === q.answer) opt.classList.add("correct");
+        if (input.value === selected.value && selected.value !== q.answer) opt.classList.add("wrong");
+      });
+
+      const isCorrect = selected.value === q.answer;
+      resultBox.className = `result show ${isCorrect ? "correct" : "wrong"}`;
+      resultBox.innerHTML = `<strong>${isCorrect ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Already Answered";
+
+      updateStats();
+      renderNav();
+      // In sequential mode, no auto-advance
+      // startAutoAdvance();
+    };
+
+    
+    const chapterSelect = $("chapterSelect");
+    chapterSelect.onchange = () => {
+      const val = chapterSelect.value;
+      if (val === "all") {
+        questions = [...sourceQuestions];
+      } else {
+        questions = sourceQuestions.filter(q => q.topic && q.topic.startsWith(val));
+      }
+      state.current = 0;
+      save();
+      render();
+    };
+
+    jumpInput.onkeydown = (e) => {
+      if (e.key !== "Enter") return;
+      const num = parseInt(jumpInput.value, 10);
+      if (!Number.isNaN(num)) {
+        let idx = num - 1;
+        if (idx < 0 || idx >= questions.length) {
+          idx = questions.findIndex(q => q.number === num);
+        }
+        if (idx >= 0 && idx < questions.length) {
+          cancelAutoAdvance();
+          captureCurrentPending();
+          state.current = idx;
+          render();
+        }
+      }
+      jumpInput.value = "";
+    };
+
+    shuffleBtn.onclick = () => {
+      cancelAutoAdvance();
+      if (confirm("Reshuffle the questions order? This will randomize the sequence.")) {
+        questions = [...sourceQuestions];
+        state.questionOrder = questions.map(q => sourceQuestions.indexOf(q));
+        state.current = 0;
+        save();
+        render();
+      }
+    };
+
+    resetBtn.onclick = () => {
+      cancelAutoAdvance();
+      if (confirm("Reset all progress? This will clear all answered questions.")) {
+        localStorage.removeItem(STORAGE_KEY);
+        questions = [...sourceQuestions];
+        state = {
+          current: 0,
+          answers: {},
+          pendingAnswers: {},
+          interactiveResults: {},
+          interactiveAnswers: {},
+          pendingInteractive: {},
+          questionOrder: questions.map(q => sourceQuestions.indexOf(q))
+        };
+        save();
+        render();
+        alert("Progress reset!");
+      }
+    };
+
+    const restartSetBtn = $("restartSetBtn");
+    if (restartSetBtn) {
+      restartSetBtn.onclick = () => {
+        cancelAutoAdvance();
+        state.current = 0;
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    }
+    const resetAllBtn = $("resetAllBtn");
+    if (resetAllBtn) {
+      resetAllBtn.onclick = () => {
+        resetBtn.click();
+      };
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" && state.current < questions.length - 1) {
+        cancelAutoAdvance();
+        captureCurrentPending();
+        state.current++;
+        render();
+      }
+      if (e.key === "ArrowLeft" && state.current > 0) {
+        cancelAutoAdvance();
+        captureCurrentPending();
+        state.current--;
+        render();
+      }
+    });
+
+    if (questions.length > 0) {
+      loadStatus.textContent = `Loaded ${questions.length} items (shuffled order).`;
+      render();
+    } else {
+      loadStatus.textContent = "Failed to load local question bank.";
+      qType.textContent = "Load Error";
+      qText.textContent = "Could not load local question data. Ensure exams/java-98-388-questions.js is available.";
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      submitBtn.disabled = true;
+    }
+  </script>
+</body>
+
+</html>

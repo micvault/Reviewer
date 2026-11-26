@@ -386,6 +386,7 @@
   <script src="./it0021-summative-2-questions.js"></script>
   <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
+  <script src="./format-helper.js"></script>
   <script>
     const STORAGE_KEY = "it0021-summative-2-quick-random-v1";
     const sourceQuestions = Array.isArray(window.IT0021_SUMMATIVE_2_QUESTIONS) ? window.IT0021_SUMMATIVE_2_QUESTIONS : [];
@@ -571,7 +572,7 @@
         });
 
         resultBox.className = `result show ${existing.correct ? "correct" : "wrong"}`;
-        resultBox.innerHTML = `<strong>${existing.correct ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${formatAnswerText(q)}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+        resultBox.innerHTML = `<strong>${existing.correct ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${formatAnswerText(q)}</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
         submitBtn.style.display = "inline-flex";
         submitBtn.disabled = true;
         submitBtn.textContent = "Already Answered";
@@ -618,7 +619,7 @@
 
       if (state.viewedStudy[q.number]) {
         resultBox.className = "result show correct";
-        resultBox.innerHTML = `<strong>Answer revealed.</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+        resultBox.innerHTML = `<strong>Answer revealed.</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
       } else {
         resultBox.className = "result";
         resultBox.innerHTML = "";
@@ -634,7 +635,7 @@
       const q = questions[state.current];
       qNumber.textContent = `Question ${state.current + 1} of ${questions.length}`;
       qType.textContent = q.type === "mcq" ? "Multiple Choice" : q.type === "order" ? "Ordering" : q.type === "match" ? "Matching" : q.type === "classify" ? "Classification" : "Study Item";
-      qText.textContent = q.question;
+      qText.innerHTML = (typeof renderFormattedText === "function") ? renderFormattedText(q.question) : q.question;
 
       contentArea.innerHTML = "";
       resultBox.className = "result";
@@ -680,7 +681,7 @@
 
       const isCorrect = answersMatch(selected, q);
       resultBox.className = `result show ${isCorrect ? "correct" : "wrong"}`;
-      resultBox.innerHTML = `<strong>${isCorrect ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${formatAnswerText(q)}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+      resultBox.innerHTML = `<strong>${isCorrect ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${formatAnswerText(q)}</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
       submitBtn.disabled = true;
       submitBtn.textContent = "Already Answered";
       updateStats();
@@ -697,7 +698,7 @@
       const ans = contentArea.querySelector(".study-answer");
       ans.classList.add("show");
       resultBox.className = "result show correct";
-      resultBox.innerHTML = `<strong>Answer revealed.</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+      resultBox.innerHTML = `<strong>Answer revealed.</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
       revealBtn.disabled = true;
       revealBtn.textContent = "Answer Revealed";
       updateStats();

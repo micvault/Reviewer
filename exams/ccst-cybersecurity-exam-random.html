@@ -471,6 +471,7 @@
   <script src="./ccst-cybersecurity-questions.js"></script>
   <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
+  <script src="./format-helper.js"></script>
   <script>
     const STORAGE_KEY = "ccst-cybersecurity-exam-random-v1";
     const LAST_SCORE_KEY = "ccst-cybersecurity-exam-last-score-v1";
@@ -725,7 +726,7 @@
           q.type === "order" ? "Ordering" :
             q.type === "match" ? "Matching" :
               q.type === "classify" ? "Classification" : "Interactive Item";
-      qText.innerHTML = q.question;
+      qText.innerHTML = (typeof renderFormattedText === "function") ? renderFormattedText(q.question) : q.question;
 
       contentArea.innerHTML = "";
 
@@ -775,12 +776,12 @@
           <div class="review-q">
             #${index + 1} (Original #${q.number}) — ${evalRes.correct ? "Correct" : "Incorrect"}
           </div>
-          <div style="margin-bottom:10px;font-size:0.95rem;color:#1e293b;">${q.question}</div>
+          <div style="margin-bottom:10px;font-size:0.95rem;color:#1e293b;">${typeof renderFormattedText === "function" ? renderFormattedText(q.question) : q.question}</div>
           <div class="review-ans">
             <div><strong>Your Answer:</strong> ${evalRes.selected || "<em>None</em>"}</div>
             <div style="margin-top:4px;"><strong>Correct Answer:</strong> ${evalRes.answerText}</div>
           </div>
-          <div class="review-exp"><strong>Explanation:</strong> ${q.explanation || "N/A"}</div>
+          <div class="review-exp"><strong>Explanation:</strong> ${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "N/A") : (q.explanation || "N/A")}</div>
         `;
         reviewContainer.appendChild(item);
       });

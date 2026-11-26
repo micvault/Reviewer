@@ -366,6 +366,7 @@
   <script src="./pmi-questions.js"></script>
   <script src="./cert-icons.js"></script>
   <script src="./pmi-interactive.js"></script>
+  <script src="./format-helper.js"></script>
   <script>
     const STORAGE_KEY = "pmi-single-reviewer-v1";
     const questions = Array.isArray(window.PMI_QUESTIONS) ? window.PMI_QUESTIONS : [];
@@ -450,7 +451,7 @@
         });
 
         resultBox.className = `result show ${existing.correct ? "correct" : "wrong"}`;
-        resultBox.innerHTML = `<strong>${existing.correct ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+        resultBox.innerHTML = `<strong>${existing.correct ? "Correct" : "Incorrect"}</strong><br/>Correct answer: <strong>${q.answer}. ${q.options[q.answer]}</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
         submitBtn.style.display = "inline-flex";
         submitBtn.disabled = true;
       } else {
@@ -499,7 +500,7 @@
 
       if (state.viewedStudy[q.number]) {
         resultBox.className = "result show correct";
-        resultBox.innerHTML = `<strong>Answer revealed.</strong><div style="margin-top:10px;color:#4a5568">${q.explanation || ""}</div>`;
+        resultBox.innerHTML = `<strong>Answer revealed.</strong><div style="margin-top:10px;color:#4a5568">${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "") : (q.explanation || "")}</div>`;
       } else {
         resultBox.className = "result";
         resultBox.innerHTML = "";
@@ -514,7 +515,7 @@
       const q = questions[state.current];
       qNumber.textContent = `Question ${q.number}`;
       qType.textContent = q.type === "mcq" ? "Multiple Choice" : q.type === "order" ? "Ordering" : q.type === "match" ? "Matching" : q.type === "classify" ? "Classification" : "Study Item";
-      qText.textContent = q.question;
+      qText.innerHTML = (typeof renderFormattedText === "function") ? renderFormattedText(q.question) : q.question;
 
       contentArea.innerHTML = "";
       resultBox.className = "result";

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCST Cybersecurity Certification Exam (Random Exam Mode)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #1a202c;
+      min-height: 100vh;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #ffffff;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .back {
+      text-decoration: none;
+      color: #667eea;
+      padding: 10px 18px;
+      border: 2px solid #667eea;
+      border-radius: 12px;
+      background: #ffffff;
+      font-size: .9rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+    .back:hover {
+      background: #667eea;
+      color: #ffffff;
+      transform: translateX(-2px);
+    }
+
+    .title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #1a202c;
+    }
+
+    .sub {
+      font-size: .85rem;
+      color: #4a5568;
+    }
+
+    .stats {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 100px;
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #2d3748;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: static !important;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .qcard {
+      padding: 32px;
+    }
+
+    .qmeta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 9px 16px;
+      border-radius: 100px;
+      font-size: .85rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .qtype {
+      padding: 9px 16px;
+      border-radius: 100px;
+      font-size: .85rem;
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      color: #4a5568;
+      font-weight: 700;
+    }
+    .qtext {
+      font-size: 1.06rem;
+      font-weight: 500;
+      line-height: 1.65;
+      color: #1a202c;
+      margin-bottom: 24px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 2px solid #e2e8f0;
+      background: #f7fafc;
+      cursor: pointer;
+      font-size: .95rem;
+      font-weight: 600;
+      color: #2d3748;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .opt:hover {
+      border-color: #667eea;
+      background: #eef2ff;
+      transform: translateX(4px);
+    }
+    .opt.selected,
+    .opt:has(input[type="radio"]:checked) {
+      border-color: #667eea !important;
+      background: #eef2ff !important;
+      color: #3730a3 !important;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25) !important;
+    }
+    .opt-letter {
+      font-weight: 800;
+      color: #667eea;
+      min-width: 24px;
+    }
+    .opt input[type="radio"] {
+      appearance: auto;
+      -webkit-appearance: auto;
+      accent-color: #667eea;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 0;
+      font-size: .92rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .b-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+    }
+
+    .b-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .b-primary:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .b-secondary {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      color: #4a5568;
+    }
+    .b-secondary:hover:not(:disabled) {
+      border-color: #cbd5e0;
+      transform: translateY(-2px);
+    }
+
+    .b-secondary:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .b-finish {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      margin-left: auto;
+    }
+
+    .b-finish:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .side {
+      padding: 24px;
+      position: sticky;
+      top: 96px;
+    }
+    .search {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: .9rem;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .search:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+      max-height: calc(100vh - 360px);
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .nav {
+      padding: 11px 0;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      color: #4a5568;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: .85rem;
+      transition: all 0.2s ease;
+    }
+    .nav:hover {
+      border-color: #667eea;
+      transform: scale(1.05);
+    }
+    .nav.current {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: #667eea;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .nav.done {
+      background: #eef2ff;
+      border-color: #667eea;
+      color: #3730a3;
+    }
+
+    .status {
+      margin-top: 12px;
+      color: #718096;
+      font-size: .9rem;
+    }
+
+    .exam-mode-notice {
+      margin-bottom: 20px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: #dbeafe;
+      border: 2px solid #3b82f6;
+      color: #1e40af;
+      font-size: .9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Results page */
+    .results-page {
+      display: none;
+    }
+
+    .score-card {
+      padding: 32px;
+      text-align: center;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      border-radius: 20px;
+      border: 2px solid #c7d2fe;
+      margin-bottom: 32px;
+    }
+    .score-big {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #1e40af;
+      margin: 12px 0 4px;
+    }
+    .score-status {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 100px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+
+    .score-status.pass {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1.5px solid #86efac;
+    }
+
+    .score-status.fail {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1.5px solid #fca5a5;
+    }
+
+    .review-item {
+      padding: 20px;
+      border-radius: 14px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .review-item.correct {
+      border-color: #48bb78;
+      background: #f0fff4;
+    }
+
+    .review-item.wrong {
+      border-color: #f56565;
+      background: #fff5f5;
+    }
+
+    .review-q {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #1a202c;
+    }
+
+    .review-ans {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .review-exp {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 0.88rem;
+      color: #475569;
+    }
+  </style>
+  <link rel="stylesheet" href="./pmi-clean.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="../index.html" class="back" onclick="window.location.href='../index.html'; return true;">Back to Home</a>
+    <div>
+      <div class="title">Java 98-388 Certification Exam</div>
+      <div class="sub">Random Exam Mode • 42 Items • Shuffled order, no feedback until submit</div>
+    </div>
+    <div class="stats">
+      <div class="pill" id="pillProgress">0 / 42 answered</div>
+    </div>
+  </div>
+
+  <div class="app">
+    <main class="card qcard">
+      <!-- Question View -->
+      <div id="questionView">
+        <div class="exam-mode-notice">
+          Exam Mode: Questions are in shuffled order. Answers are evaluated upon final submission.
+        </div>
+        <div class="qmeta">
+          <span class="badge" id="qNumber">Question 1</span>
+          <span class="qtype" id="qType">Loading...</span>
+        </div>
+        <div class="qtext" id="qText">Loading questions...</div>
+        <div id="contentArea"></div>
+        <div class="actions">
+          <button class="b-secondary" id="prevBtn">Previous</button>
+          <button class="b-primary" id="nextBtn">Next</button>
+          <button class="b-finish" id="finishBtn">Finish Exam</button>
+        </div>
+        <div class="status" id="loadStatus" style="display:none;"></div>
+      </div>
+
+      <!-- Results View -->
+      <div id="resultsView" class="results-page">
+        <div class="score-card">
+          <div style="font-weight:700;color:#64748b;">EXAM RESULTS</div>
+          <div class="score-big" id="scoreBig">--%</div>
+          <div style="font-size:1.1rem;font-weight:700;color:#334155;" id="scoreFraction">-- / 42 Correct</div>
+          <div class="score-status" id="scoreStatus">Passed</div>
+          <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="b-primary" id="retakeBtn">Retake Exam (Reshuffle)</button>
+            <button class="b-secondary" id="topHomeBtn" onclick="window.location.href='../index.html'">Back to Home</button>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom:16px;color:#1e293b;">Question Review & Explanations</h3>
+        <div id="reviewContainer"></div>
+
+        <div class="actions" style="margin-top:24px;padding:16px;background:#ffffff;border-radius:12px;border:1px solid #e2e8f0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="b-primary" id="bottomRetakeBtn">Retake Exam (Reshuffle)</button>
+          <button class="b-secondary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">Back to Top</button>
+          <button class="b-secondary" onclick="window.location.href='../index.html'">Back to Home</button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="card side" id="sidePanel">
+      <input class="search" id="jumpInput" placeholder="Jump to question #" inputmode="numeric" />
+      <div class="grid" id="navGrid"></div>
+      <button class="b-finish" id="sideFinishBtn" style="width:100%;margin-top:16px;">Finish Exam</button>
+    </aside>
+  </div>
+
+  <script src="./java-98-388-questions.js"></script>
+  <script src="./cert-icons.js"></script>
+  <script src="./pmi-interactive.js"></script>
+  <script src="./format-helper.js"></script>
+  <script>
+    const STORAGE_KEY = "java-98-388-exam-random-v1";
+    const LAST_SCORE_KEY = "java-98-388-exam-last-score-v1";
+    const sourceQuestions = Array.isArray(window.JAVA_98_388_QUESTIONS) ? window.JAVA_98_388_QUESTIONS : [];
+    let questions = [];
+    let state = {
+      current: 0,
+      answers: {},
+      interactiveAnswers: {},
+      questionOrder: [],
+      finished: false
+    };
+
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (saved && typeof saved === "object" && Array.isArray(saved.questionOrder) && saved.questionOrder.length === sourceQuestions.length) {
+        state = {
+          current: Number.isInteger(saved.current) ? saved.current : 0,
+          answers: saved.answers || {},
+          interactiveAnswers: saved.interactiveAnswers || {},
+          questionOrder: saved.questionOrder,
+          finished: !!saved.finished
+        };
+        questions = state.questionOrder.map(idx => sourceQuestions[idx]);
+      } else {
+        questions = shuffleArray(sourceQuestions);
+        state.questionOrder = questions.map(q => sourceQuestions.indexOf(q));
+      }
+    } catch {
+      questions = shuffleArray(sourceQuestions);
+      state.questionOrder = questions.map(q => sourceQuestions.indexOf(q));
+    }
+
+    const $ = id => document.getElementById(id);
+    const qNumber = $("qNumber"), qType = $("qType"), qText = $("qText"), contentArea = $("contentArea"),
+      prevBtn = $("prevBtn"), nextBtn = $("nextBtn"), finishBtn = $("finishBtn"), sideFinishBtn = $("sideFinishBtn"),
+      navGrid = $("navGrid"), jumpInput = $("jumpInput"), loadStatus = $("loadStatus"),
+      pillProgress = $("pillProgress"), questionView = $("questionView"), resultsView = $("resultsView"),
+      scoreBig = $("scoreBig"), scoreFraction = $("scoreFraction"), scoreStatus = $("scoreStatus"),
+      reviewContainer = $("reviewContainer"), retakeBtn = $("retakeBtn"), sidePanel = $("sidePanel");
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function isInteractiveType(q) {
+      return q.type === "match" || q.type === "order" || q.type === "classify" || q.type === "multichoice";
+    }
+
+    function evaluateQuestion(q) {
+      if (q.type === "mcq") {
+        const ans = state.answers[q.number];
+        return {
+          answered: !!ans,
+          correct: !!ans && ans.selected === q.answer,
+          selected: ans ? ans.selected : null,
+          answerText: `${q.answer}. ${q.options[q.answer]}`
+        };
+      }
+
+      if (q.type === "multichoice") {
+        const saved = state.interactiveAnswers[q.number]?.selected || [];
+        const expected = Array.isArray(q.answer) ? q.answer : [q.answer];
+        const correct = saved.length === expected.length && saved.every(k => expected.includes(k));
+        return {
+          answered: saved.length > 0,
+          correct,
+          selected: saved.join(", "),
+          answerText: expected.join(", ")
+        };
+      }
+
+      if (q.type === "match") {
+        const saved = state.interactiveAnswers[q.number]?.slots || {};
+        const allFilled = q.pairs.every((_, i) => !!saved[i]);
+        const correct = allFilled && q.pairs.every((p, i) => saved[i] === p.left);
+        return {
+          answered: Object.keys(saved).length > 0,
+          correct,
+          selected: Object.entries(saved).map(([i, val]) => `${q.pairs[i]?.right} → ${val}`).join("<br/>"),
+          answerText: q.pairs.map(p => `${p.right} → <strong>${p.left}</strong>`).join("<br/>")
+        };
+      }
+
+      if (q.type === "classify") {
+        const savedBuckets = state.interactiveAnswers[q.number]?.placed || state.interactiveAnswers[q.number]?.buckets || {};
+        const placedCount = Object.values(savedBuckets).reduce((sum, arr) => sum + (Array.isArray(arr) ? arr.length : 0), 0);
+        const correct = q.items.every(it => {
+          const catIdx = q.categories.indexOf(it.category);
+          const bucketItems = savedBuckets[catIdx] || savedBuckets[it.category] || [];
+          return bucketItems.includes(it.text);
+        });
+        return {
+          answered: placedCount > 0,
+          correct,
+          selected: `Items categorized (${placedCount} items placed)`,
+          answerText: q.items.map(it => `• ${it.text} → <strong>${it.category}</strong>`).join("<br/>")
+        };
+      }
+
+      if (q.type === "order") {
+        const savedOrder = state.interactiveAnswers[q.number]?.order || [];
+        const correct = savedOrder.length === q.items.length && savedOrder.every((it, i) => it === q.items[i]);
+        return {
+          answered: savedOrder.length > 0,
+          correct,
+          selected: savedOrder.join(" → "),
+          answerText: q.items.join(" → ")
+        };
+      }
+
+      return { answered: false, correct: false, selected: "", answerText: "" };
+    }
+
+    function isQuestionAnswered(q) {
+      return evaluateQuestion(q).answered;
+    }
+
+    function updateStats() {
+      const answered = questions.filter(isQuestionAnswered).length;
+      pillProgress.textContent = `${answered} / ${questions.length} answered`;
+    }
+
+    function renderNav() {
+      navGrid.innerHTML = "";
+      questions.forEach((q, index) => {
+        const b = document.createElement("button");
+        b.className = "nav";
+        b.textContent = index + 1;
+        b.title = `Question ${q.number}`;
+        if (index === state.current) b.classList.add("current");
+        if (isQuestionAnswered(q)) b.classList.add("done");
+        b.onclick = () => {
+          state.current = index;
+          save();
+          render();
+        };
+        navGrid.appendChild(b);
+      });
+    }
+
+    function renderMCQ(q) {
+      const wrap = document.createElement("div");
+      wrap.className = "options";
+      const existing = state.answers[q.number];
+
+      Object.entries(q.options).forEach(([key, value]) => {
+        const label = document.createElement("label");
+        label.className = "opt";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "opt";
+        radio.value = key;
+
+        const letter = document.createElement("span");
+        letter.className = "opt-letter";
+        letter.textContent = key + ".";
+
+        const text = document.createElement("span");
+        text.style.flex = "1";
+        text.textContent = value;
+
+        label.append(radio, letter, text);
+
+        if (existing && existing.selected === key) {
+          radio.checked = true;
+          label.classList.add("selected");
+        }
+
+        const handleSelect = () => {
+          wrap.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+          label.classList.add("selected");
+          state.answers[q.number] = { selected: key, correct: key === q.answer };
+          save();
+          updateStats();
+          renderNav();
+        };
+
+        radio.addEventListener("change", handleSelect);
+        label.addEventListener("click", () => {
+          radio.checked = true;
+          handleSelect();
+        });
+
+        wrap.appendChild(label);
+      });
+      contentArea.appendChild(wrap);
+    }
+
+    function renderInteractive(q) {
+      const savedResponse = state.interactiveAnswers[q.number] || null;
+
+      PMI_INTERACTIVE.render(
+        q,
+        contentArea,
+        false, // not completed / no answers revealed in exam mode
+        (isCorrect, response) => {
+          if (response) {
+            state.interactiveAnswers[q.number] = response;
+            save();
+            updateStats();
+            renderNav();
+          }
+        },
+        null,
+        (draftData) => {
+          if (draftData) {
+            state.interactiveAnswers[q.number] = draftData;
+            save();
+            updateStats();
+            renderNav();
+          }
+        },
+        savedResponse
+      );
+
+      // In exam mode, hide immediate check buttons
+      const checkBtn = contentArea.querySelector(".ia-check-btn");
+      if (checkBtn) {
+        checkBtn.style.display = "none";
+      }
+    }
+
+    function render() {
+      if (state.finished) {
+        showResults();
+        return;
+      }
+
+      questionView.style.display = "block";
+      resultsView.style.display = "none";
+      sidePanel.style.display = "block";
+
+      if (!questions.length) return;
+      if (state.current < 0) state.current = 0;
+      if (state.current > questions.length - 1) state.current = questions.length - 1;
+
+      const q = questions[state.current];
+      qNumber.textContent = `Question ${state.current + 1} of ${questions.length} (ID #${q.number})`;
+      qType.textContent = q.type === "mcq" ? "Multiple Choice" :
+        q.type === "multichoice" ? "Multiple Select" :
+          q.type === "order" ? "Ordering" :
+            q.type === "match" ? "Matching" :
+              q.type === "classify" ? "Classification" : "Interactive Item";
+      qText.innerHTML = (typeof renderFormattedText === "function") ? renderFormattedText(q.question) : q.question;
+
+      contentArea.innerHTML = "";
+
+      if (q.type === "mcq") {
+        renderMCQ(q);
+      } else {
+        renderInteractive(q);
+      }
+
+      prevBtn.disabled = state.current === 0;
+      nextBtn.disabled = state.current === questions.length - 1;
+      updateStats();
+      renderNav();
+      save();
+    }
+
+    function finishExam() {
+      const answeredCount = questions.filter(isQuestionAnswered).length;
+      const unanswered = questions.length - answeredCount;
+      const msg = unanswered > 0
+        ? `You have ${unanswered} unanswered question(s). Are you sure you want to finish and submit the exam?`
+        : "Are you sure you want to finish and submit the exam?";
+
+      if (confirm(msg)) {
+        state.finished = true;
+        save();
+        showResults();
+      }
+    }
+
+    function showResults() {
+      questionView.style.display = "none";
+      resultsView.style.display = "block";
+      sidePanel.style.display = "none";
+
+      let correctCount = 0;
+      reviewContainer.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const evalRes = evaluateQuestion(q);
+        if (evalRes.correct) correctCount++;
+
+        const item = document.createElement("div");
+        item.className = `review-item ${evalRes.correct ? "correct" : "wrong"}`;
+
+        item.innerHTML = `
+          <div class="review-q">
+            #${index + 1} (Original #${q.number}) — ${evalRes.correct ? "Correct" : "Incorrect"}
+          </div>
+          <div style="margin-bottom:10px;font-size:0.95rem;color:#1e293b;">${typeof renderFormattedText === "function" ? renderFormattedText(q.question) : q.question}</div>
+          <div class="review-ans">
+            <div><strong>Your Answer:</strong> ${evalRes.selected || "<em>None</em>"}</div>
+            <div style="margin-top:4px;"><strong>Correct Answer:</strong> ${evalRes.answerText}</div>
+          </div>
+          <div class="review-exp"><strong>Explanation:</strong> ${typeof renderFormattedText === "function" ? renderFormattedText(q.explanation || "N/A") : (q.explanation || "N/A")}</div>
+        `;
+        reviewContainer.appendChild(item);
+      });
+
+      const pct = Math.round((correctCount / questions.length) * 100);
+      scoreBig.textContent = `${pct}%`;
+      scoreFraction.textContent = `${correctCount} / ${questions.length} Correct`;
+
+      // 70% passing threshold
+      if (pct >= 70) {
+        scoreStatus.className = "score-status pass";
+        scoreStatus.textContent = "PASSED ";
+      } else {
+        scoreStatus.className = "score-status fail";
+        scoreStatus.textContent = "NEEDS PRACTICE";
+      }
+
+      localStorage.setItem(LAST_SCORE_KEY, JSON.stringify({ pct, correctCount, total: questions.length, date: new Date().toISOString() }));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    prevBtn.onclick = () => {
+      if (state.current > 0) {
+        state.current -= 1;
+        render();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (state.current < questions.length - 1) {
+        state.current += 1;
+        render();
+      }
+    };
+
+    finishBtn.onclick = finishExam;
+    sideFinishBtn.onclick = finishExam;
+
+    jumpInput.onkeydown = (e) => {
+      if (e.key !== "Enter") return;
+      const num = parseInt(jumpInput.value, 10);
+      if (!Number.isNaN(num)) {
+        let idx = num - 1;
+        if (idx < 0 || idx >= questions.length) {
+          idx = questions.findIndex(q => q.number === num);
+        }
+        if (idx >= 0 && idx < questions.length) {
+          state.current = idx;
+          render();
+        }
+      }
+      jumpInput.value = "";
+    };
+
+    const restartExam = () => {
+      if (confirm("Start a new exam with fresh random order?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        questions = shuffleArray(sourceQuestions);
+        state = {
+          current: 0,
+          answers: {},
+          interactiveAnswers: {},
+          questionOrder: questions.map(q => sourceQuestions.indexOf(q)),
+          finished: false
+        };
+        save();
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    retakeBtn.onclick = restartExam;
+    const bottomRetake = $("bottomRetakeBtn");
+    if (bottomRetake) bottomRetake.onclick = restartExam;
+
+    document.addEventListener("keydown", (e) => {
+      if (state.finished) return;
+      if (e.key === "ArrowRight" && state.current < questions.length - 1) {
+        state.current++;
+        render();
+      }
+      if (e.key === "ArrowLeft" && state.current > 0) {
+        state.current--;
+        render();
+      }
+    });
+
+    if (questions.length > 0) {
+      loadStatus.textContent = `Loaded ${questions.length} items (shuffled exam order).`;
+      render();
+    } else {
+      loadStatus.textContent = "Failed to load local question bank.";
+      qType.textContent = "Load Error";
+      qText.textContent = "Could not load local question data. Ensure exams/java-98-388-questions.js is available.";
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+    }
+  </script>
+</body>
+
+</html>
