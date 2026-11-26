@@ -224,6 +224,7 @@
     .subcat-pills {
       display: flex;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
     .filter-btn {
@@ -247,6 +248,39 @@
       background: #0f172a;
       color: #ffffff;
       border-color: #0f172a;
+    }
+
+    /* Category Group Divider */
+    .cert-group-divider {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 2px 6px;
+      margin-top: 10px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .cert-group-divider:first-child {
+      margin-top: 0;
+      padding-top: 2px;
+    }
+
+    .cert-group-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cert-group-meta {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
     }
 
     /* Mode Items */
@@ -368,7 +402,7 @@
         <label for="categoryDropdown" class="filter-label">Jump to:</label>
         <select id="categoryDropdown" class="category-select">
           <option value="none">Select Category...</option>
-          <option value="cert-da">1. Certification Reviewers (CCST & ITS-DA)</option>
+          <option value="cert-da">1. Certification Reviewers (ITS-DA, CCST & Java)</option>
           <option value="pmi">2. PMI Certification</option>
           <option value="summative">3. Summative (IT0021)</option>
           <option value="all">Expand All</option>
@@ -378,7 +412,7 @@
 
     <div class="panels">
 
-      <!-- #1: CERTIFICATION REVIEWERS (DATA ANALYTICS) -->
+      <!-- #1: CERTIFICATION REVIEWERS (DATA ANALYTICS, CCST, JAVA) -->
       <details class="category-panel" id="panel-cert-da">
         <summary class="category-header">
           <div class="cat-title-wrap">
@@ -395,7 +429,7 @@
             </div>
           </div>
           <div class="cat-right">
-            <span class="badge-count">CCST, ITS-DA &amp; Java • 9 modes</span>
+            <span class="badge-count">ITS-DA, CCST &amp; Java • 9 modes</span>
             <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
               stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
@@ -404,17 +438,82 @@
         </summary>
         <div class="panel-body">
           <div class="subcat-header">
-            <span class="subcat-title">Certification Reviewers</span>
+            <span class="subcat-title">Certifications</span>
             <div class="subcat-pills">
               <button class="filter-btn active" data-filter="all">All Certs</button>
-              <button class="filter-btn" data-filter="java">Java 98-388 (42)</button>
-              <button class="filter-btn" data-filter="ccst">CCST Cyber (179)</button>
               <button class="filter-btn" data-filter="its-da">ITS-DA (68)</button>
+              <button class="filter-btn" data-filter="ccst">CCST Cyber (179)</button>
+              <button class="filter-btn" data-filter="java">Java 98-388 (42)</button>
             </div>
           </div>
 
           <div class="modes" id="cert-modes">
-            <!-- Java 98-388 -->
+            <!-- 1. IT Specialist: Data Analytics (ITS-DA) -->
+            <div class="cert-group-divider" data-group="its-da">
+              <span class="cert-group-name">IT Specialist: Data Analytics</span>
+              <span class="cert-group-meta">68 Questions • 3 Modes</span>
+            </div>
+
+            <article class="mode" data-group="its-da">
+              <div class="mode-main">
+                <div class="mode-title">IT Specialist: Data Analytics — Sequential Review</div>
+                <div class="mode-desc">Original order with immediate feedback, interactive multi-select, matching, and full explanations.</div>
+              </div>
+              <a class="btn" href="exams/its-da.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="its-da">
+              <div class="mode-main">
+                <div class="mode-title">IT Specialist: Data Analytics — Random Exam Mode</div>
+                <div class="mode-desc">Shuffled test simulation with no feedback until final submit and results breakdown.</div>
+              </div>
+              <a class="btn" href="exams/its-da-exam-random.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="its-da">
+              <div class="mode-main">
+                <div class="mode-title">IT Specialist: Data Analytics — Quick Review (Random)</div>
+                <div class="mode-desc">Rapid practice with auto-advance countdown and shuffled question order.</div>
+              </div>
+              <a class="btn" href="exams/its-da-quick-random.html">Open</a>
+            </article>
+
+            <!-- 2. Cisco CCST: Cybersecurity -->
+            <div class="cert-group-divider" data-group="ccst">
+              <span class="cert-group-name">Cisco CCST: Cybersecurity</span>
+              <span class="cert-group-meta">179 Questions • 3 Modes</span>
+            </div>
+
+            <article class="mode" data-group="ccst">
+              <div class="mode-main">
+                <div class="mode-title">CCST Cybersecurity — Sequential Review</div>
+                <div class="mode-desc">All 179 questions in original order with immediate feedback, chapter filtering (7 chapters), and verified explanations.</div>
+              </div>
+              <a class="btn" href="exams/ccst-cybersecurity.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="ccst">
+              <div class="mode-main">
+                <div class="mode-title">CCST Cybersecurity — Random Exam Mode</div>
+                <div class="mode-desc">Full 179-item mock exam simulation with shuffled order, scoring, and comprehensive results breakdown.</div>
+              </div>
+              <a class="btn" href="exams/ccst-cybersecurity-exam-random.html">Open</a>
+            </article>
+
+            <article class="mode" data-group="ccst">
+              <div class="mode-main">
+                <div class="mode-title">CCST Cybersecurity — Quick Review (Random)</div>
+                <div class="mode-desc">Fast-paced randomized practice with auto-advance countdown and immediate feedback.</div>
+              </div>
+              <a class="btn" href="exams/ccst-cybersecurity-quick-random.html">Open</a>
+            </article>
+
+            <!-- 3. Java MTA 98-388 -->
+            <div class="cert-group-divider" data-group="java">
+              <span class="cert-group-name">MTA 98-388: Java Programming</span>
+              <span class="cert-group-meta">42 Questions • 3 Modes</span>
+            </div>
+
             <article class="mode" data-group="java">
               <div class="mode-main">
                 <div class="mode-title">Java 98-388 — Sequential Review</div>
@@ -437,61 +536,6 @@
                 <div class="mode-desc">Fast-paced randomized practice with auto-advance countdown and immediate feedback.</div>
               </div>
               <a class="btn" href="exams/java-98-388-quick-random.html">Open</a>
-            </article>
-
-            <!-- CCST Cybersecurity -->
-            <article class="mode" data-group="ccst">
-              <div class="mode-main">
-                <div class="mode-title">CCST Cybersecurity — Sequential Review</div>
-                <div class="mode-desc">All 179 questions in original order with immediate feedback, chapter filtering (7
-                  chapters), and verified explanations.</div>
-              </div>
-              <a class="btn" href="exams/ccst-cybersecurity.html">Open</a>
-            </article>
-
-            <article class="mode" data-group="ccst">
-              <div class="mode-main">
-                <div class="mode-title">CCST Cybersecurity — Random Exam Mode</div>
-                <div class="mode-desc">Full 179-item mock exam simulation with shuffled order, scoring, and
-                  comprehensive results breakdown.</div>
-              </div>
-              <a class="btn" href="exams/ccst-cybersecurity-exam-random.html">Open</a>
-            </article>
-
-            <article class="mode" data-group="ccst">
-              <div class="mode-main">
-                <div class="mode-title">CCST Cybersecurity — Quick Review (Random)</div>
-                <div class="mode-desc">Fast-paced randomized practice with auto-advance countdown and immediate
-                  feedback.</div>
-              </div>
-              <a class="btn" href="exams/ccst-cybersecurity-quick-random.html">Open</a>
-            </article>
-
-            <!-- ITS-DA -->
-            <article class="mode" data-group="its-da">
-              <div class="mode-main">
-                <div class="mode-title">IT Specialist: Data Analytics — Sequential Review</div>
-                <div class="mode-desc">Original order with immediate feedback, interactive multi-select, matching, and
-                  full explanations.</div>
-              </div>
-              <a class="btn" href="exams/its-da.html">Open</a>
-            </article>
-
-            <article class="mode" data-group="its-da">
-              <div class="mode-main">
-                <div class="mode-title">IT Specialist: Data Analytics — Random Exam Mode</div>
-                <div class="mode-desc">Shuffled test simulation with no feedback until final submit and results
-                  breakdown.</div>
-              </div>
-              <a class="btn" href="exams/its-da-exam-random.html">Open</a>
-            </article>
-
-            <article class="mode" data-group="its-da">
-              <div class="mode-main">
-                <div class="mode-title">IT Specialist: Data Analytics — Quick Review (Random)</div>
-                <div class="mode-desc">Rapid practice with auto-advance countdown and shuffled question order.</div>
-              </div>
-              <a class="btn" href="exams/its-da-quick-random.html">Open</a>
             </article>
           </div>
         </div>
@@ -620,6 +664,11 @@
 
           <div class="modes" id="it0021-modes">
             <!-- Summative 1 -->
+            <div class="cert-group-divider" data-group="s1">
+              <span class="cert-group-name">IT0021 — Summative Assessment 1</span>
+              <span class="cert-group-meta">3 Modes</span>
+            </div>
+
             <article class="mode" data-group="s1">
               <div class="mode-main">
                 <div class="mode-title">IT0021 — Summative 1 (Full Exam Mode)</div>
@@ -645,6 +694,11 @@
             </article>
 
             <!-- Summative 2 -->
+            <div class="cert-group-divider" data-group="s2">
+              <span class="cert-group-name">IT0021 — Summative Assessment 2</span>
+              <span class="cert-group-meta">3 Modes</span>
+            </div>
+
             <article class="mode" data-group="s2">
               <div class="mode-main">
                 <div class="mode-title">IT0021 — Summative 2 (Full Exam Mode)</div>
@@ -712,18 +766,18 @@
       if (!panel || !modesContainer) return;
 
       const buttons = panel.querySelectorAll(".subcat-pills .filter-btn");
-      const modes = modesContainer.querySelectorAll(".mode");
+      const items = modesContainer.querySelectorAll("[data-group]");
 
       buttons.forEach(btn => {
         btn.addEventListener("click", () => {
           buttons.forEach(b => b.classList.remove("active"));
           btn.classList.add("active");
           const filter = btn.dataset.filter;
-          modes.forEach(mode => {
-            if (filter === "all" || mode.dataset.group === filter) {
-              mode.style.display = "flex";
+          items.forEach(el => {
+            if (filter === "all" || el.dataset.group === filter) {
+              el.style.display = "flex";
             } else {
-              mode.style.display = "none";
+              el.style.display = "none";
             }
           });
         });
